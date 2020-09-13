@@ -1,28 +1,48 @@
 body {
+    /* Form styling */ 
     width: 800px;
     margin: 0 auto;
-    background-image: url("./Images/phone_globe.jpg");
-    background-repeat: no-repeat;
-    background-position-x: center;
     background-color: lightseagreen;
+    color: white;
 }
 img{
+    /* General */
     width: 200px;
     height: 200px;
+    border: rgb(36, 36, 161);
+    border-style: ridge;
+    border-width: 5px;
+    border-radius: 40px;
 }
 h1{
+    /* Typography */ 
     text-align: center;
+    color: white;
+    font-family: cursive;
+    font-style: italic;
+    color: #FFFFFF;
+background: lightseagreen;
+text-shadow: #FFF 0px 0px 5px, #FFF 0px 0px 10px, #FFF 0px 0px 15px, #1C6EA4 0px 0px 20px, #1C6EA4 0px 0px 30px, #1C6EA4 0px 0px 40px, #1C6EA4 0px 0px 50px, #1C6EA4 0px 0px 75px;
 }
 h2{
     text-align: center;
 }
 main{
+    /* block styling */ 
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 div{
-    border: 5px solid black;
+    /* Styling the products display */
+    border: 5px solid white;
     display: flex;
+    background-image: url("./Images/phone_globe.jpg");
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-size: cover;
+    background-color: lightseagreen;
 }
-
+footer{
+    background-color: lightseagreen;
+}
