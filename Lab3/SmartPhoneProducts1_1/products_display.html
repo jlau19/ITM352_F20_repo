@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style id="localstyle"></style>
     <link rel="stylesheet" href="./products-style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,10 @@
 </head>
 <body>
     <header><h1>Used Smartphone Store</h1></header>
+    <div>
+        <input id='speedSlider' type='range' min=".1" max="5" step=".1" style="direction: rtl;"
+        onchange="localStyle.innerHTML = '.rotate img {animation-duration: ' + speedSlider.value + 's;}';">
+    </div>
     <div><main> 
     <section class="item" id="HTC" 
         onmouseover="this.className='item rotate'"
