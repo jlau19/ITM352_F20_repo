@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    hello
+    <script>
+        var firstName = "Hiu Chung Jojo";
+        var middleName = "Rick";
+        var lastName = "Lau";
+        var fullName = firstName + " " + middleName + " " + lastName;
+        var formattedName = fullName + "<br>" + firstName[0] + "." + lastName[0] + ".";
+        document.write(formattedName)
+    </script>
+    <div id="ageDiv"></div>
+</body>
+</html>
+<script>
+    var myAge = 23;
+    var numberOfKids = 2;
+    document.getElementById("ageDiv").innerHTML = "I would like to have " + numberOfKids*myAge + " kids";
+</script>
