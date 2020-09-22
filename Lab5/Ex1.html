@@ -6,14 +6,12 @@
     <title>Document</title>
 </head>
 <body>
-    hello
     <script>
         var firstName = "Hiu Chung Jojo";
         var middleName = "Rick";
         var lastName = "Lau";
         var fullName = firstName + " " + middleName + " " + lastName;
-        var formattedName = fullName + "<br>" + firstName[0] + "." + lastName[0] + ".";
-        document.write(formattedName)
+        var formattedName = "<b>" + firstName + "</b>" + "<br>" + "<i>" + middleName + "</i>" + "<br>" + "<font size='50'>" + lastName + "</font>";
     </script>
     <div id="ageDiv"></div>
 </body>
@@ -22,4 +20,11 @@
     var myAge = 23;
     var numberOfKids = 2;
     document.getElementById("ageDiv").innerHTML = "I would like to have " + numberOfKids*myAge + " kids";
+</script>
+
+<p id="taxAmount"></p>
+<script>
+    var taxedMoney = 0.0413 * 500;
+    var finalAmount = taxedMoney.toFixed(2);
+    document.getElementById("taxAmount").innerHTML = "The tax on " + formattedName + "'s bill is $" + finalAmount + ".";
 </script>
