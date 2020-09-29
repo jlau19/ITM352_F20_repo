@@ -9,15 +9,15 @@
     <script>
     name = "Jojo";
 
-        likesBeer = true;
+        likesBeer = true; 
         
-        document.write(name + ' does ');
+        if ( likesBeer == false ) {
+            document.write('Beer is something I dislike!');
+        } 
+        else {
+            document.write('I like beer!');
+        }
         
-        if ( likesBeer == false )
-        
-            document.write('not ');
-        
-        document.write('like beer!');
     </script>
 </body>
 </html>
