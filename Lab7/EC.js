@@ -1,66 +1,59 @@
 // Extra Credit
 
-month = 1;
-
+month = -1;
 
 switch (month) {
-    case 1:
-        month = "January";
+    case "January":
         num_days = 31;
+        text = month + " has " + num_days + " days";
         break;
-    case 2:
-        month = "February";
+    case "February":
         num_days = 29;
+        text = month + " has " + num_days + " days";
         break;
-    case 3:
-        month = "March";
+    case "March":
         num_days = 31;
+        text = month + " has " + num_days + " days";
         break;
-    case 4:
-        month = "April";
+    case "April":
         num_days = 30;
+        text = month + " has " + num_days + " days";
         break;
-    case 5:
-        month = "May";
+    case "May":
         num_days = 31;
+        text = month + " has " + num_days + " days";
         break;
-    case 6:
-        month = "June";
+    case "June":
         num_days = 30;
+        text = month + " has " + num_days + " days";
         break;
-    case 7:
-        month = "July";
+    case "July":
         num_days = 31;
+        text = month + " has " + num_days + " days";
         break;
-    case 8:
-        month = "August";
+    case "August":
         num_days = 31;
+        text = month + " has " + num_days + " days";
         break;
-    case 9:
-        month = "September";
+    case "September":
         num_days = 30;
+        text = month + " has " + num_days + " days";
         break;
-    case 10:
-        month = "October";
+    case "October":
         num_days = 31;
+        text = month + " has " + num_days + " days";
         break;
-    case 11:
-        month = "November";
+    case "November":
         num_days = 30;
+        text = month + " has " + num_days + " days";
         break;
-    case 12:
-        month = "December";
+    case "December":
         num_days = 31;
+        text = month + " has " + num_days + " days";
         break;
     default:
         text = "Error: Invalid month"
 }
 
-if (month <= 12) {
-    console.log(month + " has " + num_days + " days");
-}
-else {
-    console.log(text);
-}
-
+console.log(text);
 
