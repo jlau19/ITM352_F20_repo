@@ -1,42 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
     <script>
-        function isNonNegInt(val, returnErrors=false) {
+        function isNonNegInt(val, returnErrors = false) {
             errors = []; // assume no errors at first
-            if(Number(val) != val) {errors.push('Not a number!');// Check if string is a number value
-        } else {
-            if(val < 0) errors.push('Negative value!'); // Check if it is non-negative
-            if(parseInt(val) != val) errors.push('Not an integer!'); // Check that it is an integer
-        }
+            if (Number(val) != val) {
+                errors.push('Not a number!');// Check if string is a number value
+            } else {
+                if (val < 0) errors.push('Negative value!'); // Check if it is non-negative
+                if (parseInt(val) != val) errors.push('Not an integer!'); // Check that it is an integer
+            }
             return returnErrors ? errors : ((errors.length > 0) ? false : true);
         }
 
         function checkQuantityTextbox() {
             qty_textbox_message.innerHTML = isNonNegInt(quantity_textbox.value, true).join(" ");
         }
-    
-        function displayPurchase(quantity_textbox) {
-            if(isNonNegInt(quantity_textbox)) {
-                document.write(`Thank for you for ordering ${quantity_textbox.value} things!`);
+
+        function displayPurchase(purchase_qty) {
+            if (isNonNegInt(purchase_qty)) {
+                document.write(`Thank for you for ordering ${purchase_qty} things!`);
             }
             else {
                 checkQuantityTextbox();
             }
         }
 
-
     </script>
 </head>
+
 <body>
+    <form name="quantity_form" action="javascript:displayPurchase()">
     <label for="quantity_desired">Quantity desired:</label>
-    <input type="text" id="quantity_textbox" name="quantity_desired" onkeyup="checkQuantityTextbox();">
+    <input type="text" name="quantity_textbox" name="quantity_desired" onkeyup="checkQuantityTextbox();">
     <span id='qty_textbox_message'>Enter a quantity</span>
     <br>
-    <input type="button" value="Purchase" onClick="displayPurchase()">
+    <input type="submit" value="Purchase" onsubmit="displayPurchase()">
+    </form>
 </body>
+
 </html>
