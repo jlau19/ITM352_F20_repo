@@ -21,24 +21,34 @@
         }
 
         function checkQuantityTextbox() {
-            qty_textbox_message.innerHTML = isNonNegInt(quantity_textbox.value, true).join(" ");
+            qty_textbox_message.innerHTML = isNonNegInt(quantity_form.quantity_textbox.value, true).join(" ");
         }
 
         function displayPurchase() {
-            purchase_qty = GET["quantity_textbox.value"];
-            if (isNonNegInt(purchase_qty)) {
-                document.getElementById("the_body").innerHTML = `Thank you for purchasing ${purchase_qty} things!`;
+            if (isNonNegInt(quantity_textboxRemove)) {
+                document.write(`Thank you for purchasing ${quantity_textboxRemove} things!`);
             }
             else {
-               checkQuantityTextbox();
+                checkQuantityTextbox();
             }
         }
+
+        window.onload = function queryFunction() {
+            quantity_textboxRemove = params.get("quantity_textbox");
+            if (params.has('quantity_textbox')) {
+                displayPurchase(params.get('quantity_textbox'));
+            }
+            if (params.has('quantity_textbox')) {
+                quantity_form["quantity_textbox"].value = params.get('quantity_textbox');
+            }
+        }
+
 
     </script>
 </head>
 
 <body id="the_body">
-    <form name="quantity_form" action="./order_page.html" method="GET">
+    <form name="quantity_form" action="" method="GET" onsubmit="queryFunction();">
         <label for="quantity_desired">Quantity desired:</label>
         <input type="text" name="quantity_textbox" name="quantity_desired" onkeyup="checkQuantityTextbox();">
         <span id='qty_textbox_message'>Enter a quantity</span>
