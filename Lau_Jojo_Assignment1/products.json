@@ -1,42 +1,42 @@
 [
     {
-        "item": "Cherry Hat",
+        "name": "Cherry Hat",
         "price": 25.00,
         "image": "hat.jpg"
     },
     {
-        "item": "Cherry Messenger Bag",
+        "name": "Cherry Messenger Bag",
         "price": 175.00,
         "image": "bag1.jpg"
     },
     {
-        "item": "Cherry Travel Bag",
+        "name": "Cherry Travel Bag",
         "price": 240.00,
         "image": "bag2.jpg"
     },
     {
-        "item": "Cherry Socks",
+        "name": "Cherry Socks",
         "price": 20.00,
         "image": "socks.jpg"
     },
     {
-        "item": "Cherry Earrings",
+        "name": "Cherry Earrings",
         "price": 30.00,
         "image": "earrings.jpg"
     },
     {
-        "item": "Cherry Ring",
+        "name": "Cherry Ring",
         "price": 50.00,
         "image": "ring.jpg"
     },
     {
-        "item": "Cherry Necklace",
+        "name": "Cherry Necklace",
         "price": 70.00,
-        "image": ""
+        "image": "necklace.jpg"
     },
     {
-        "item": "Cherry Bracelet",
+        "name": "Cherry Bracelet",
         "price": 65.00,
-        "image": ""
+        "image": "bracelet.jpg"
     }
 ]
