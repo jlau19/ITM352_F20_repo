@@ -1,77 +1,90 @@
 <script>
     // Products array
     var products =
-    [
-    {
-        "name": "Cherry Hat",
-        "price": 25.00,
-        "image": "hat.jpg"
-    },
-    {
-        "name": "Cherry Messenger Bag",
-        "price": 175.00,
-        "image": "bag1.jpg"
-    },
-    {
-        "name": "Cherry Travel Bag",
-        "price": 240.00,
-        "image": "bag2.jpg"
-    },
-    {
-        "name": "Cherry Socks",
-        "price": 20.00,
-        "image": "socks.jpg"
-    },
-    {
-        "name": "Cherry Earrings",
-        "price": 30.00,
-        "image": "earrings.jpg"
-    },
-    {
-        "name": "Cherry Ring",
-        "price": 50.00,
-        "image": "ring.jpg"
-    },
-    {
-        "name": "Cherry Necklace",
-        "price": 70.00,
-        "image": "necklace.jpg"
-    },
-    {
-        "name": "Cherry Bracelet",
-        "price": 65.00,
-        "image": "bracelet.jpg"
-    }
-];
+        [
+            {
+                "name": "Cherry Hat",
+                "price": 25.00,
+                "image": "hat.jpg"
+            },
+            {
+                "name": "Cherry Messenger Bag",
+                "price": 175.00,
+                "image": "bag1.jpg"
+            },
+            {
+                "name": "Cherry Travel Bag",
+                "price": 240.00,
+                "image": "bag2.jpg"
+            },
+            {
+                "name": "Cherry Socks",
+                "price": 20.00,
+                "image": "socks.jpg"
+            },
+            {
+                "name": "Cherry Earrings",
+                "price": 30.00,
+                "image": "earrings.jpg"
+            },
+            {
+                "name": "Cherry Ring",
+                "price": 50.00,
+                "image": "ring.jpg"
+            },
+            {
+                "name": "Cherry Necklace",
+                "price": 70.00,
+                "image": "necklace.jpg"
+            },
+            {
+                "name": "Cherry Bracelet",
+                "price": 65.00,
+                "image": "bracelet.jpg"
+            }
+        ];
 </script>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <link rel="stylesheet" href="./products-style.css">
+    <link rel="stylesheet" href="./style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cherry On Top</title>
 </head>
+
 <body>
-    <header><h1>Cherry On Top</h1></header>
-    <div><main> 
+    <header>
+        <h1>Cherry On Top</h1>
+    </header>
 
-<script>
-    // Display products
-    for(i = 0; i < products.length; i++) {
+    <form name="purchase_form" action="./invoice.html" method="GET">
+    <div>
+        <main>
+            <script>
+                // Display products
+                for (i = 0; i < products.length; i++) {
 
-    document.write(`
-    <section class="item">
-        <h2>${products[i]['name']}</h2>
-        <p>$${products[i]['price']}</p>
-        <img src="./images/${products[i]['image']}">
-    </section>
-    `); 
-}
-</script>
-
-</main></div>
-<footer><h1>Your One Stop Shop for Cherry Accessories</h1></footer>
+                    document.write(`
+                    <section class="item">
+                    <h3>${products[i]['name']}</h3>
+                    <p><img src="./images/${products[i]['image']}"></p>
+                    <p>$${products[i]['price'].toFixed(2)}</p>
+                    <label>Quantity:</label><br>
+                    <input type="text" placeholder="0" name="quantity${i}"><br><br>
+                    </section>
+                    `);
+                }
+            </script>
+        </main>
+    </div>
+    <p><center><input type="submit" value="Purchase"></center></p>
+    </form>
+    <footer>
+        <h1>~Stay Cherry~</h1>
+    </footer>
 </body>
+
 </html>
