@@ -13,15 +13,21 @@ img{
     border-width: 5px;
     border-radius: 40px;
 }
-h1{
-    /* Typography */ 
-    line-height: 100px;
+header{
     text-align: center;
     font-family: cursive;
     font-style: italic;
-    color: #FFFFFF;
     background: url(./images/background.jpg);
+}
+h1{
+    /* Typography */ 
+    line-height: 125px;
+    color: #FFFFFF;
 text-shadow: #FFF 0px 5px 5px, #FFF 0px 0px 10px, #FFF 0px 0px 15px, #ad5273 0px 0px 20px, #ad5273 0px 0px 30px, #ad5273 0px 0px 40px, #ad5273 50px 50px 50px, #ad5273 75px 75px 75px;
+}
+h2{
+    line-height: 25px;
+    color: maroon;
 }
 h3{
     text-align: center;
@@ -38,6 +44,13 @@ div{
     text-align: center;
     border: 5px solid white;
     background-color:#d89d9d;
+}
+footer{
+    line-height: 150px;
+    text-align: center;
+    font-family: cursive;
+    font-style: italic;
+    background: url(./images/background.jpg);
 }
 
 

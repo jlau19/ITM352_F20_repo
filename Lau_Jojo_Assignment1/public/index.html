@@ -58,6 +58,7 @@
 <body>
     <header>
         <h1>Cherry On Top</h1>
+        <h2>Shop all of our cherry accessories!</h2>
     </header>
 
     <form name="purchase_form" action="./invoice.html" method="GET">
@@ -73,7 +74,7 @@
                     <p><img src="./images/${products[i]['image']}"></p>
                     <p>$${products[i]['price'].toFixed(2)}</p>
                     <label>Quantity:</label><br>
-                    <input type="text" placeholder="0" name="quantity${i}"><br><br>
+                    <input type="text" name="quantity${i}"><br><br>
                     </section>
                     `);
                 }
