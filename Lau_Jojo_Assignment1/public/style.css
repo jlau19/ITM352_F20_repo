@@ -2,7 +2,7 @@ body {
     /* Form styling */ 
     width: 800px;
     margin: 0 auto;
-    color: white;
+    color: #ad5273;
     background-color: #ffebe3;
 }
 img{
@@ -27,7 +27,7 @@ text-shadow: #FFF 0px 5px 5px, #FFF 0px 0px 10px, #FFF 0px 0px 15px, #ad5273 0px
 }
 h2{
     line-height: 25px;
-    color: maroon;
+    color: #ad5273;
 }
 h3{
     text-align: center;
@@ -42,8 +42,8 @@ main{
 div{
     /* Styling the products display */
     text-align: center;
-    border: 5px solid white;
-    background-color:#d89d9d;
+    border: 5px solid #ad5273;
+    background-color: white;
 }
 footer{
     line-height: 150px;
