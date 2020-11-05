@@ -67,5 +67,8 @@ footer{
     font-style: italic;
     background: url(./images/background.jpg);
 }
+table{
+    width: 800px;
+}
 
 
