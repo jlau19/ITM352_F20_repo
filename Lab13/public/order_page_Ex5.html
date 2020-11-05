@@ -21,9 +21,11 @@
             return returnErrors ? errors : ((errors.length > 0) ? false : true);
         }
 
-        function checkQuantityTextbox() {
-            qty_textbox_message.innerHTML = isNonNegInt(quantity_form.quantity_textbox.value, true).join(" ");
+        function checkQuantityTextbox(theTextbox) {
+            errs = isNonNegInt(theTextbox.value, true);
+            document.getElementById(theTextbox.name + '_message').innerHTML = errs.join(", ");
         }
+
 
         function displayPurchase() {
             if (isNonNegInt(quantity_textboxRemove)) {
@@ -50,12 +52,19 @@
 </head>
 
 <body id="the_body">
-    <form name="quantity_form" action="/process_form" method="POST" onsubmit="queryFunction();">
-        <label for="quantity_desired">Quantity desired:</label>
-        <input type="text" name="quantity_textbox" name="quantity_desired" onkeyup="checkQuantityTextbox();">
-        <span id='qty_textbox_message'>Enter a quantity</span>
+    <form name='quantity_form' action="http://localhost:8080/process_form" method="POST">
+        <script>
+            for (i in products) {
+                document.write(`<h3>${products[i]["model"]} at \$${products[i]["price"]}</h3>`);
+                document.write(`
+        <label for="quantity_textbox">quantity desired:</label>
+        <input type="text" name="quantity_textbox${i}" onkeyup="checkQuantityTextbox(this);">
+        <span id="quantity_textbox${i}_message">Enter a quantity</span>
+        `);
+            }
+        </script>
         <br>
-        <input type="submit" name="submit_button" value="Purchase">
+        <input type="submit" value='Purchase' name="purchase_submit_button">
     </form>
 </body>
 
