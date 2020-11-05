@@ -9,7 +9,7 @@ img{
     /* General */
     width: 150px;
     height: 150px;
-    border-style: ridge;
+    border-style: double;
     border-width: 5px;
     border-radius: 40px;
 }
@@ -29,6 +29,20 @@ h2{
     line-height: 25px;
     color: #ad5273;
 }
+nav{
+    /* Styling the navigation bar */
+    background: #ad5273;
+    line-height: 30px;
+}
+li{
+    list-style-type: none;
+    display: inline;
+    margin: 25px;
+}
+a{
+    color: white;
+    font-style: italic;
+}
 h3{
     text-align: center;
     font-style: italic;
@@ -42,7 +56,8 @@ main{
 div{
     /* Styling the products display */
     text-align: center;
-    border: 5px solid #ad5273;
+    border: solid #ad5273;
+    border-width: 5px;
     background-color: white;
 }
 footer{
