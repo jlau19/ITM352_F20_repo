@@ -13,7 +13,7 @@ app.post("/process_form", function (request, response) {
    if(isNonNegInt(POST["quantity_textbox"])) {
         response.send(`Thank you for ordering ${POST["quantity_textbox"]} items!`);
     } else {
-        response.send(`Hey! ${POST["quantity_textbox"]} is not valid!}`)
+        response.send(`Hey! ${POST["quantity_textbox"]} is not valid!`)
     }     
 });
 
