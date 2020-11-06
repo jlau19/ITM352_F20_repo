@@ -22,18 +22,19 @@ app.post("/process_invoice", function (request, response, next) {
         subtotal = 0;
         str = '';
         for (i = 0; i < products.length; i++) {
-            a_qty = 0;
-            if(typeof POST[`quantity${i}`] != 'undefined') {
-                a_qty = POST[`quantity${i}`];
+            qty = 0;
+            val = POST[`quantity${i}`];
+            if(isNonNegInt(val)) {
+                qty = val;
             }
-            if (a_qty > 0) {
+            if (qty > 0) {
                 // product row
-                extended_price =a_qty * products[i].price
+                extended_price = qty * products[i].price
                 subtotal += extended_price;
                 str += (`
       <tr>
         <td align="center" width="43%">${products[i].name}</td>
-        <td align="center" width="11%">${a_qty}</td>
+        <td align="center" width="11%">${qty}</td>
         <td align="center" width="13%">\$${products[i].price}</td>
         <td align="center" width="54%">\$${extended_price}</td>
       </tr>
@@ -62,6 +63,17 @@ app.post("/process_invoice", function (request, response, next) {
     }
 
 });
+
+function isNonNegInt(q, returnErrors = false) {
+    errors = []; // assume no errors at first
+    if (Number(q) != q) {
+        errors.push('Not a number!');// Check if string is a number value
+    } else {
+        if (q < 0) errors.push('Negative value!'); // Check if it is non-negative
+        if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
+    }
+    return returnErrors ? errors : ((errors.length > 0) ? false : true);
+}
 
 app.get("/store", function (request, response) {
     var contents = fs.readFileSync('./views/display_products.template', 'utf8');
