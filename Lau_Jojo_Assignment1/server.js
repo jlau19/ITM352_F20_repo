@@ -1,11 +1,16 @@
+/* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
+Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! */
+
+// To access code from node packages
 var express = require('express');
 var myParser = require("body-parser");
-var fs = require('fs');
 var products = require("./products.json");
-var app = express();
+var fs = require('fs');
+var app = express(); // Create an express app with reference to express
 
-app.use(myParser.urlencoded({ extended: true }));
+app.use(myParser.urlencoded({ extended: true })); // Parse body of requests with application/x-www-form-urlencoded content type
 
+// Response when /process_invoice is requested, when purchase form is submitted
 app.post("/process_invoice", function (request, response, next) {
     let POST = request.body;
     if(typeof POST['purchase_submit'] != 'undefined') {
@@ -18,6 +23,7 @@ app.post("/process_invoice", function (request, response, next) {
     var contents = fs.readFileSync('./views/invoice.template', 'utf8');
     response.send(eval('`' + contents + '`')); // render template string
 
+    // Calls on this function to display invoice table
     function display_invoice_table_rows() {
         subtotal = 0;
         str = '';
@@ -64,6 +70,7 @@ app.post("/process_invoice", function (request, response, next) {
 
 });
 
+// Function to check whether a quantity is a non-negative integer
 function isNonNegInt(q, returnErrors = false) {
     errors = []; // assume no errors at first
     if (Number(q) != q) {
@@ -75,10 +82,12 @@ function isNonNegInt(q, returnErrors = false) {
     return returnErrors ? errors : ((errors.length > 0) ? false : true);
 }
 
+// Response when /store is requested
 app.get("/store", function (request, response) {
     var contents = fs.readFileSync('./views/display_products.template', 'utf8');
     response.send(eval('`' + contents + '`')); // render template string
 
+    // Calls on this function to display products in /store page
     function display_products() {
         str = '';
         for (i = 0; i < products.length; i++) {
@@ -97,6 +106,6 @@ app.get("/store", function (request, response) {
     }
 });
 
-app.use(express.static('./public'));
+app.use(express.static('./public')); // Serve static files from public folder
 
-var listener = app.listen(8080, () => { console.log('server started listening on port ' + listener.address().port) });
+var listener = app.listen(8080, () => { console.log('server started listening on port ' + listener.address().port) }); // listens to connections on this port and console.log() enables us to see that it's listening
