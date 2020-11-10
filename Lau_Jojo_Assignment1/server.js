@@ -1,5 +1,5 @@
 /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
-Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! */
+Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! Codes modified from previous labs and from screencast examples */
 
 // To access code from node packages
 var express = require('express');
@@ -18,7 +18,7 @@ app.post("/process_invoice", function (request, response, next) {
         next();
     } 
 
-    console.log(Date.now() + ': Purchase made from ip ' + request.ip + ' data: ' + JSON.stringify(POST));
+    console.log(Date.now() + ': Purchase made from ip ' + request.ip + ' data: ' + JSON.stringify(POST)); // will log down from which ip address the purchase is made
 
     var contents = fs.readFileSync('./views/invoice.template', 'utf8');
     response.send(eval('`' + contents + '`')); // render template string
