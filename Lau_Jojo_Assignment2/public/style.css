@@ -1,0 +1,84 @@
+/* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
+Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! Codes modified from previous labs and from screencast examples unless specified. Login form and register form modified from W3Schools template. */
+
+body {
+    /* Form styling */ 
+    width: 800px;
+    margin: 0 auto;
+    color: #ad5273;
+    background-color: #ffebe3;
+}
+img{
+    /* Image styling */
+    width: 150px;
+    height: 150px;
+    border-style: double;
+    border-width: 5px;
+    border-radius: 40px;
+}
+header{
+    /* Styles <header> to include h1 & h2 in it */
+    text-align: center;
+    font-family: cursive;
+    font-style: italic;
+    background: url(./images/background.jpg);
+}
+h1{
+    /* Styles all in <h1> */ 
+    line-height: 125px;
+    color: #FFFFFF;
+    text-shadow: #FFF 0px 5px 5px, #FFF 0px 0px 10px, #FFF 0px 0px 15px, #ad5273 0px 0px 20px, #ad5273 0px 0px 30px, #ad5273 0px 0px 40px, #ad5273 50px 50px 50px, #ad5273 75px 75px 75px;
+}
+h2{
+    /* Styles all in <h2> */
+    line-height: 25px;
+    color: #ad5273;
+}
+nav{
+    /* Styling the navigation bar */
+    background: #ad5273;
+    line-height: 30px;
+}
+li{
+    /* Styles list in navigation bar */
+    list-style-type: none;
+    display: inline;
+    margin: 25px;
+}
+a{
+    /* Styles text in navigation bar */
+    color: white;
+    font-style: italic;
+}
+h3{
+    /* Styles all in <h3> */
+    text-align: center;
+    font-style: italic;
+}
+main{
+    /* Styling the spacing */ 
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+div{
+    /* Styling the products display */
+    text-align: center;
+    border: solid #ad5273;
+    border-width: 5px;
+    background-color: white;
+}
+footer{
+    /* Styles all in footer to include all text in it */
+    line-height: 150px;
+    text-align: center;
+    font-family: cursive;
+    font-style: italic;
+    background: url(./images/background.jpg);
+}
+table{
+    /* Styles table size in invoice */
+    width: 800px;
+}
+
+

@@ -60,23 +60,18 @@ app.get("/register", function (request, response) {
     response.send(str);
 });
 
-app.post("/register", function (request, response) {
-    // process a simple register form
-    POST = request.body;
-    if (typeof users_reg_data[request.body.username] == 'undefined' && POST['password'] == POST['repeat_password']) {
-        username = POST['username'];
+app.post("/process_register", function (request, response) {
+    /* process a simple register form
+    validate the reg info. if all data is valid, write to the user_data_filename */
+    if (typeof users_reg_data[username] == 'undefined' && users_reg_data[username].password == POSTusers_reg_data[username].repeat_password) {
+        username = request.body.username;
         users_reg_data[username] = {};
-        users_reg_data[username].username = username;
-        users_reg_data[username].password = POST['password'];
-        users_reg_data[username].email = POST['email'];
-
-        data = JSON.stringify(users_reg_data);
-        fs.writeFileSync(user_data_filename, data, "utf-8");
-
-        response.redirect('http://localhost:8080/login');
-    } else {
-        response.redirect('http://localhost:8080/register');
-    }
+        users_reg_data[username].password = request.body.password;
+        users_reg_data[username].email = request.body.email;
+        // write updated object to user_data_filename
+        reg_info_str = JSON.stringify(users_reg_data);
+        fs.writeFileSync(user_data_filename, reg_info_str);
+    }   
 });
 
 app.listen(8080, () => console.log(`listening on port 8080`));
