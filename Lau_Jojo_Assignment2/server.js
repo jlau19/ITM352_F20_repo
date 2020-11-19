@@ -71,14 +71,14 @@ function isNonNegInt(q, returnErrors = false) {
 // Response when /process_invoice is requested, when purchase form is submitted
 app.post("/process_invoice", function (request, response, next) {
     let POST = request.body;
-    console.log(quantity_data);
+    console.log(POST);
 
     if (typeof POST['purchase_submit'] != 'undefined') {
         var has_qty = false;
 
         // Validates that form has quantities
         for (i = 0; i < products.length; i++) {
-            val = quantity_data[`quantity${i}`];
+            val = POST[`quantity${i}`];
 
             if (val > 0) {
                 has_qty = true;
