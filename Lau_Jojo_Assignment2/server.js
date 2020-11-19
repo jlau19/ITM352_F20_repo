@@ -10,7 +10,6 @@ var fs = require('fs');
 var app = express();
 // Popup alert idea from stackoverflow.com by users Pranav and Kiran Mistry
 var alert = require('alert');
-var qs = require('querystring');
 const { type } = require('os');
 var quantity_data;
 
@@ -72,14 +71,14 @@ function isNonNegInt(q, returnErrors = false) {
 // Response when /process_invoice is requested, when purchase form is submitted
 app.post("/process_invoice", function (request, response, next) {
     let POST = request.body;
+    console.log(quantity_data);
 
     if (typeof POST['purchase_submit'] != 'undefined') {
         var has_qty = false;
-        var valid_qty = true;
 
         // Validates that form has quantities
         for (i = 0; i < products.length; i++) {
-            val = POST[`quantity${i}`];
+            val = quantity_data[`quantity${i}`];
 
             if (val > 0) {
                 has_qty = true;
@@ -96,6 +95,9 @@ app.post("/process_invoice", function (request, response, next) {
                 alert('Make sure your quantities are valid!');
             }
         };
+    } else {
+        response.redirect('./store');
+        alert('Make sure your quantities are valid!');
     }
 });
 
