@@ -17,7 +17,7 @@
       <li><a href="./login">Login</a></li>
     </nav>
     
-    <form name="login_form" action="/process_invoice" method="POST">
+    <form name="login_form" action="/process_login" method="POST">
     <div class="container">
     <h2>Sign in to your account:</h2>
     <hr>

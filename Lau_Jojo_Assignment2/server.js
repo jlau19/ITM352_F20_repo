@@ -69,8 +69,8 @@ function isNonNegInt(q, returnErrors = false) {
     return returnErrors ? errors : ((errors.length > 0) ? false : true);
 };
 
-// Response when /process_login is requested, when purchase form is submitted
-app.post("/process_login", function (request, response, next) {
+// Response when /process_invoice is requested, when purchase form is submitted
+app.post("/process_invoice", function (request, response, next) {
     let POST = request.body;
 
     if (typeof POST['purchase_submit'] != 'undefined') {
@@ -99,9 +99,9 @@ app.post("/process_login", function (request, response, next) {
     }
 });
 
-//change login/invoice names
-// Response when process_invoice is requested from login
-app.post("/process_invoice", function (request, response) {
+
+// Response when process_login is requested from login
+app.post("/process_login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
     var POST = request.body;
     console.log(quantity_data);
@@ -128,9 +128,9 @@ app.post("/process_invoice", function (request, response) {
                         subtotal += extended_price;
                         str += (`
       <tr>
-        <td align="center" width="43%">${products[0].name}</td>
+        <td align="center" width="43%">${products[i].name}</td>
         <td align="center" width="11%">${qty}</td>
-        <td align="center" width="13%">\$${products[0].price}</td>
+        <td align="center" width="13%">\$${products[i].price}</td>
         <td align="center" width="54%">\$${extended_price}</td>
       </tr>
       `);
