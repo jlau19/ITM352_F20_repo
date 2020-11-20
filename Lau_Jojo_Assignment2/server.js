@@ -11,6 +11,7 @@ var app = express();
 // Popup alert idea from stackoverflow.com by users Pranav and Kiran Mistry
 var alert = require('alert');
 const { type } = require('os');
+const { nextTick } = require('process');
 var quantity_data;
 
 const user_data_filename = 'user_data.json';
@@ -59,48 +60,63 @@ app.get("/login", function (request, response) {
 // Function to check whether a quantity is a non-negative integer
 function isNonNegInt(q, returnErrors = false) {
     errors = []; // assume no errors at first
-    if (Number(q) != q) {
-        errors.push('Not a number!');// Check if string is a number value
-    } else {
-        if (q < 0) errors.push('Negative value!'); // Check if it is non-negative
-        if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
-    }
+    if (Number(q) != q) errors.push('Not a number!');// Check if string is a number value
+    if (q < 0) errors.push('Negative value!'); // Check if it is non-negative
+    if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
     return returnErrors ? errors : ((errors.length > 0) ? false : true);
 };
 
-// Response when /process_invoice is requested, when purchase form is submitted
-app.post("/process_invoice", function (request, response, next) {
+// old code
+/*app.post("/process_invoice", function (request, response) {
     let POST = request.body;
-    console.log(POST);
+    quantity_data = POST;
 
     if (typeof POST['purchase_submit'] != 'undefined') {
-        var has_qty = false;
-
         // Validates that form has quantities
         for (i = 0; i < products.length; i++) {
-            val = POST[`quantity${i}`];
-
-            if (val > 0) {
-                has_qty = true;
-            }
+            var val = POST[`quantity${i}`];
 
             // If there is at least one valid quantity that is a non-negative integer, will redirect to login. Otherwise, alert will pop up to try again.
-            if (has_qty == true && isNonNegInt(val) == true) {
-                // Quantities are good, save them on server for later
-                quantity_data = POST;
-                var contents = fs.readFileSync('./views/login.template', 'utf8');
-                response.send(eval('`' + contents + '`')); // render template string
+            if (val > 0 && isNonNegInt(val) == true) {
+                response.redirect('./login');
+                break;
             } else {
-                response.redirect('./store');
-                alert('Make sure your quantities are valid!');
+                alert('Enter valid quantities!');
+                break;
             }
-        };
-    } else {
-        response.redirect('./store');
-        alert('Make sure your quantities are valid!');
+        }
+    }
+});*/
+
+// Response when /process_invoice is requested, when purchase form is submitted
+app.post("/process_invoice", function (request, response) {
+    let POST = request.body;
+    quantity_data = POST;
+
+    if (typeof POST['purchase_submit'] != 'undefined') {
+        errs = [];
+        // Validates that form has quantities
+        for (i = 0; i < products.length; i++) {
+            var val = POST[`quantity${i}`];
+
+            // If there is at least one valid quantity that is a non-negative integer, will redirect to login. Otherwise, alert will pop up to try again.
+            if (val <= 0) {
+                errs.push('Enter a quantity!');
+            }
+            if (isNonNegInt(val) == false) {
+                errs.push('Make sure quantities are valid!');
+            }
+            if (errs.length > 0) {
+                alert(`**ERROR** ${errs.join(' ')}`);
+                break;
+            }
+            if (errs.length == 0) {
+                response.redirect('./login');
+                break;
+            }
+        }
     }
 });
-
 
 // Response when process_login is requested from login
 app.post("/process_login", function (request, response) {
@@ -120,7 +136,7 @@ app.post("/process_login", function (request, response) {
                 for (i = 0; i < products.length; i++) {
                     qty = 0;
                     val = quantity_data[`quantity${i}`];
-                    
+
                     if (isNonNegInt(val)) {
                         qty = val;
                     }
@@ -159,7 +175,7 @@ app.post("/process_login", function (request, response) {
                 return str;
             }
         } else {
-            alert('Your password does not match what we have for you!');
+            alert('Password incorrect!');
         }
     } else {
         alert(`${request.body.username} does not exist!`);
@@ -181,7 +197,7 @@ app.post("/process_register", function (request, response) {
     // Name validation
     // Reg expressions found/modified from stackoverflow & w3resource
     if ((/^[a-zA-Z]+[ ]+[a-zA-Z]+$/).test(request.body.name) == false) {
-        err.push('Name must contain letters only');
+        err.push('Enter a first and last name that contains letters only');
     }
     if (request.body.name.length > 30) {
         err.push('Name must be 30 characters or less');
@@ -217,18 +233,18 @@ app.post("/process_register", function (request, response) {
         // Makes username case insensitive
         username = request.body.username.toLowerCase();;
         users_reg_data[username] = {};
+        users_reg_data[username].name = request.body.name;
         users_reg_data[username].password = request.body.password;
         users_reg_data[username].email = request.body.email;
         // write updated object to user_data_filename
         reg_info_str = JSON.stringify(users_reg_data);
         fs.writeFileSync(user_data_filename, reg_info_str);
-
-        var contents = fs.readFileSync('./views/login.template', 'utf8');
-        response.send(eval('`' + contents + '`')); // render template string
+        // rediret to login page
+        response.redirect('./login');
         alert('Success! You may now log in.');
     }
     if (err.length > 0) {
-        alert(`**ERROR** ${err}`);
+        alert(`**ERROR** ${err.join(' ')}`);
     }
 });
 
