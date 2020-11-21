@@ -1,19 +1,18 @@
 /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
+For e-Commerce Web-site Cherry On Top.
 Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! All codes modified from previous labs and from screencast examples unless specified. Login form and register form modified from W3Schools template. */
 
 // To access code from node packages
 var express = require('express');
 var myParser = require("body-parser");
-var products = require("./products.json");
+var products = require('./public/products.json');
 var fs = require('fs');
 // Create an express app with reference to express
 var app = express();
 // Popup alert idea from stackoverflow.com by users Pranav and Kiran Mistry
-var alert = require('alert');
-const { type } = require('os');
-const { nextTick } = require('process');
+var alert = require('./node_modules/alert');
+// Variables to use later
 var quantity_data;
-
 const user_data_filename = 'user_data.json';
 
 // check if file exists before reading
@@ -61,60 +60,51 @@ app.get("/login", function (request, response) {
 function isNonNegInt(q, returnErrors = false) {
     errors = []; // assume no errors at first
     if (Number(q) != q) errors.push('Not a number!');// Check if string is a number value
+    if (q == '') q = 0; // for empty textboxes
     if (q < 0) errors.push('Negative value!'); // Check if it is non-negative
     if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
     return returnErrors ? errors : ((errors.length > 0) ? false : true);
 };
-
-// old code
-/*app.post("/process_invoice", function (request, response) {
-    let POST = request.body;
-    quantity_data = POST;
-
-    if (typeof POST['purchase_submit'] != 'undefined') {
-        // Validates that form has quantities
-        for (i = 0; i < products.length; i++) {
-            var val = POST[`quantity${i}`];
-
-            // If there is at least one valid quantity that is a non-negative integer, will redirect to login. Otherwise, alert will pop up to try again.
-            if (val > 0 && isNonNegInt(val) == true) {
-                response.redirect('./login');
-                break;
-            } else {
-                alert('Enter valid quantities!');
-                break;
-            }
-        }
-    }
-});*/
 
 // Response when /process_invoice is requested, when purchase form is submitted
 app.post("/process_invoice", function (request, response) {
     let POST = request.body;
     quantity_data = POST;
 
-    if (typeof POST['purchase_submit'] != 'undefined') {
-        errs = [];
-        // Validates that form has quantities
+    // Calls on this function in product selection form onsubmit button to validate quantities. Idea is from Britnie Roach. 
+    function isQtyValid(quantity_data) {
+        is_valid = true; // Starts out true
+        
         for (i = 0; i < products.length; i++) {
-            var val = POST[`quantity${i}`];
+            var val = quantity_data[`quantity${i}`];
 
-            // If there is at least one valid quantity that is a non-negative integer, will redirect to login. Otherwise, alert will pop up to try again.
-            if (val <= 0) {
-                errs.push('Enter a quantity!');
+            // Validates whether product selection form is empty
+            if (quantity_data.quantity0 == '' && quantity_data.quantity1 == '' && quantity_data.quantity2 == '' && quantity_data.quantity3 == '' && quantity_data.quantity4 == '' && quantity_data.quantity5 == '' && quantity_data.quantity6 == '' && quantity_data.quantity7 == '') {
+                is_valid = false;
             }
+        
+            // Validates whether quantities are non-negative integers and greater than 0
+            if (isNonNegInt(val) && val > 0) {
+                is_valid = true;
+            }
+
+            // Validates whether quantities are not non-negative integers
             if (isNonNegInt(val) == false) {
-                errs.push('Make sure quantities are valid!');
-            }
-            if (errs.length > 0) {
-                alert(`**ERROR** ${errs.join(' ')}`);
-                break;
-            }
-            if (errs.length == 0) {
-                response.redirect('./login');
-                break;
+                is_valid = false;
             }
         }
+        // If is_valid stays true after all validations, isQtyValid function will return true
+        if (is_valid == true) {
+            return true;
+        }
+    }
+    // If isQtyValid function returns true, redirect user to login with alert message of what to do
+    if (isQtyValid(quantity_data) == true) {
+        response.redirect('./login');
+        alert('Please log in to view invoice, or register for a new account.');
+    // If isQtyValid function returns false, leaves user on the same page with pop-up alert error
+    } else {
+        alert('Please enter valid quantities!');
     }
 });
 
@@ -122,9 +112,12 @@ app.post("/process_invoice", function (request, response) {
 app.post("/process_login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
     var POST = request.body;
-    console.log(quantity_data);
-    // if user exists, get their password
+    quantity_data = POST;
+
+    // if user exists
     if (typeof users_reg_data[request.body.username] != 'undefined' && typeof quantity_data != 'undefined') {
+
+        // if the input password matches the one that's stored
         if (request.body.password == users_reg_data[request.body.username].password) {
             var contents = fs.readFileSync('./views/invoice.template', 'utf8');
             response.send(eval('`' + contents + '`')); // render template string
@@ -192,7 +185,7 @@ app.get("/register", function (request, response) {
 app.post("/process_register", function (request, response) {
     /* process a simple register form
     validate the reg info. if all data is valid, write to the user_data_filename */
-    var err = [];
+    var err = []; // Starts errors as empty
 
     // Name validation
     // Reg expressions found/modified from stackoverflow & w3resource
@@ -244,6 +237,7 @@ app.post("/process_register", function (request, response) {
         alert('Success! You may now log in.');
     }
     if (err.length > 0) {
+        // Displays all errors in alert if there are any
         alert(`**ERROR** ${err.join(' ')}`);
     }
 });
