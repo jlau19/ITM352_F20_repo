@@ -50,7 +50,7 @@
                 ${display_products()}
             </main>
         </div>
-        <p><center><input type="submit" value="Click here to purchase" name="purchase_submit" onsubmit="return isQtyValid();></center></p>
+        <p><center><input type="submit" value="Click here to purchase" name="purchase_submit"></center></p>
     </form>
       <font size="2"><p>Disclaimer: This is an assignment for ITM 352 - UH Manoa Fall 2020. This is not a real store. All product images/designs belong to their respective websites/owners: AliExpress (Cherry Hat), Gucci (Cherry Chain Bag), Louis Vuitton (Cherry Travel Bag), Socksmith (Cherry Socks), DazzledByJewels (Cherry Earrings), Broken English Jewelry (Cherry Ring), Finn Jewelry (Cherry Necklace), Double Header USA (Cherry Bracelet). Thank you!</p></font>
     <footer>

@@ -19,7 +19,7 @@
 
 <body>
 <center><h2>Invoice</h2>
-Thank you ${request.body.username} for shopping at Cherry On Top!</center>
+Thank you ${user_name} for shopping at Cherry On Top!</center>
 <br>
 
 <nav class="navbar">

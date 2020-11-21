@@ -10,7 +10,7 @@ var fs = require('fs');
 // Create an express app with reference to express
 var app = express();
 // Popup alert idea from stackoverflow.com by users Pranav and Kiran Mistry
-var alert = require('./node_modules/alert');
+var alert = require('alert');
 // Variables to use later
 var quantity_data;
 const user_data_filename = 'user_data.json';
@@ -69,20 +69,18 @@ function isNonNegInt(q, returnErrors = false) {
 // Response when /process_invoice is requested, when purchase form is submitted
 app.post("/process_invoice", function (request, response) {
     let POST = request.body;
-    quantity_data = POST;
+    is_valid = true; // Starts out true
 
-    // Calls on this function in product selection form onsubmit button to validate quantities. Idea is from Britnie Roach. 
-    function isQtyValid(quantity_data) {
-        is_valid = true; // Starts out true
-        
+    if (typeof POST['purchase_submit'] != 'undefined') {
+
         for (i = 0; i < products.length; i++) {
-            var val = quantity_data[`quantity${i}`];
+            var val = POST[`quantity${i}`];
 
             // Validates whether product selection form is empty
-            if (quantity_data.quantity0 == '' && quantity_data.quantity1 == '' && quantity_data.quantity2 == '' && quantity_data.quantity3 == '' && quantity_data.quantity4 == '' && quantity_data.quantity5 == '' && quantity_data.quantity6 == '' && quantity_data.quantity7 == '') {
+            if (POST.quantity0 == '' && POST.quantity1 == '' && POST.quantity2 == '' && POST.quantity3 == '' && POST.quantity4 == '' && POST.quantity5 == '' && POST.quantity6 == '' && POST.quantity7 == '') {
                 is_valid = false;
             }
-        
+
             // Validates whether quantities are non-negative integers and greater than 0
             if (isNonNegInt(val) && val > 0) {
                 is_valid = true;
@@ -93,18 +91,14 @@ app.post("/process_invoice", function (request, response) {
                 is_valid = false;
             }
         }
-        // If is_valid stays true after all validations, isQtyValid function will return true
+        // If is_valid stays true after all validations, redirect to login
         if (is_valid == true) {
-            return true;
+            quantity_data = POST;
+            response.redirect('./login');
+        } else {
+        // If is_valid is falese, error alert
+            alert('Please enter valid quantities!');
         }
-    }
-    // If isQtyValid function returns true, redirect user to login with alert message of what to do
-    if (isQtyValid(quantity_data) == true) {
-        response.redirect('./login');
-        alert('Please log in to view invoice, or register for a new account.');
-    // If isQtyValid function returns false, leaves user on the same page with pop-up alert error
-    } else {
-        alert('Please enter valid quantities!');
     }
 });
 
@@ -112,13 +106,14 @@ app.post("/process_invoice", function (request, response) {
 app.post("/process_login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
     var POST = request.body;
-    quantity_data = POST;
+    console.log(quantity_data);
+    user_name = request.body.username.toLowerCase();
 
     // if user exists
-    if (typeof users_reg_data[request.body.username] != 'undefined' && typeof quantity_data != 'undefined') {
+    if (typeof users_reg_data[user_name] != 'undefined' && typeof quantity_data != 'undefined') {
 
         // if the input password matches the one that's stored
-        if (request.body.password == users_reg_data[request.body.username].password) {
+        if (request.body.password == users_reg_data[user_name].password) {
             var contents = fs.readFileSync('./views/invoice.template', 'utf8');
             response.send(eval('`' + contents + '`')); // render template string
 
@@ -171,7 +166,7 @@ app.post("/process_login", function (request, response) {
             alert('Password incorrect!');
         }
     } else {
-        alert(`${request.body.username} does not exist!`);
+        alert(`${user_name} does not exist!`);
     }
 });
 
