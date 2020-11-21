@@ -10,7 +10,7 @@ var fs = require('fs');
 // Create an express app with reference to express
 var app = express();
 // Popup alert idea from stackoverflow.com by users Pranav and Kiran Mistry
-var alert = require('alert');
+var alert = require('./node_modules/alert');
 // Variables to use later
 var quantity_data;
 const user_data_filename = 'user_data.json';
@@ -237,7 +237,7 @@ app.post("/process_register", function (request, response) {
     }
     if (err.length > 0) {
         // Displays all errors in alert if there are any
-        alert(`**ERROR** ${err.join('! ')}`);
+        alert(`**ERROR** ${err.join(' ')}`);
     }
 });
 
