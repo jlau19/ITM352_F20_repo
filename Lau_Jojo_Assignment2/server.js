@@ -101,7 +101,6 @@ app.post("/process_invoice", function (request, response) {
     // If isQtyValid function returns true, redirect user to login with alert message of what to do
     if (isQtyValid(quantity_data) == true) {
         response.redirect('./login');
-        alert('Please log in to view invoice, or register for a new account.');
     // If isQtyValid function returns false, leaves user on the same page with pop-up alert error
     } else {
         alert('Please enter valid quantities!');
