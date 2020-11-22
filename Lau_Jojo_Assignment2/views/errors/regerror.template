@@ -7,7 +7,7 @@
 </head>
 <body>
 <script>
-    // Displays error message as an alert before redirecting user to previous page
+    // Displays error message as an alert before redirecting user to previous page, history.back() method from w3schools
     alert('**ERROR** ${errs}');
     window.history.back();
 </script>
