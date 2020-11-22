@@ -25,7 +25,6 @@ Thank you ${user_name} for shopping at Cherry On Top!</center>
 <nav class="navbar">
   <li><a href="./index.html">Home</a></li>
   <li><a href="./store">Products</a></li>
-  <li><a href="./login">Login</a></li>
 </nav>
 
   <table border="2">

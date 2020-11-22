@@ -4,13 +4,11 @@ Special thanks to Professor Dan Port for the screencast helps and examples on th
 
 // To access code from node packages
 var express = require('express');
-var myParser = require("body-parser");
+var myParser = require('body-parser');
 var products = require('./public/products.json');
 var fs = require('fs');
 // Create an express app with reference to express
 var app = express();
-// Popup alert idea from stackoverflow.com by users Pranav and Kiran Mistry
-var alert = require('alert');
 // Variables to use later
 var quantity_data;
 const user_data_filename = 'user_data.json';
@@ -96,8 +94,9 @@ app.post("/process_invoice", function (request, response) {
             quantity_data = POST;
             response.redirect('./login');
         } else {
-        // If is_valid is falese, error alert
-            alert('Please enter valid quantities!');
+        // If is_valid is false, redirect to error page
+        var err_contents = fs.readFileSync('./views/errors/qtyerror.template', 'utf8');
+        response.send(eval('`' + err_contents + '`')); // render template string
         }
     }
 });
@@ -163,10 +162,14 @@ app.post("/process_login", function (request, response) {
                 return str;
             }
         } else {
-            alert('Password incorrect!');
+            // If passwords do not match, redirect to error page
+            var err_contents = fs.readFileSync('./views/errors/pwerror.template', 'utf8');
+            response.send(eval('`' + err_contents + '`')); // render template string 
         }
     } else {
-        alert(`${user_name} does not exist!`);
+        // If username does not exist, redirect to error page
+        var err_contents = fs.readFileSync('./views/errors/usererror.template', 'utf8');
+        response.send(eval('`' + err_contents + '`')); // render template string
     }
 });
 
@@ -228,12 +231,14 @@ app.post("/process_register", function (request, response) {
         reg_info_str = JSON.stringify(users_reg_data);
         fs.writeFileSync(user_data_filename, reg_info_str);
         // rediret to login page
-        response.redirect('./login');
-        alert('Success! You may now log in.');
+        response.redirect('./loginsuccess.html');   
     }
     if (err.length > 0) {
-        // Displays all errors in alert if there are any
-        alert(`**ERROR** ${err.join(' ')}`);
+        // Displays all errors in error page if there are any
+        errs = err.join('! ');
+        var contents = fs.readFileSync('./views/errors/regerror.template', 'utf8');
+        response.send(eval('`' + contents + '`')); // render template string
+
     }
 });
 

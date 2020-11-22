@@ -21,7 +21,6 @@
     <nav class="navbar">
       <li><a href="./index.html">Home</a></li>
       <li><a href="./store">Products</a></li>
-      <li><a href="./login">Login</a></li>
     </nav>
     
     <form name="login_form" action="/process_login" method="POST">
