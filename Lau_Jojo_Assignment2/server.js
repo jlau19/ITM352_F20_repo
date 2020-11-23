@@ -67,7 +67,7 @@ function isNonNegInt(q, returnErrors = false) {
 // Response when /process_invoice is requested, when purchase form is submitted
 app.post("/process_invoice", function (request, response) {
     let POST = request.body;
-    is_valid = true; // Starts out true
+    is_valid = true; // Starts out true, idea of this from Britnie Roach
 
     if (typeof POST['purchase_submit'] != 'undefined') {
 
@@ -106,6 +106,7 @@ app.post("/process_login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
     var POST = request.body;
     console.log(quantity_data);
+    // Make username case insensitive
     user_name = request.body.username.toLowerCase();
 
     // if user exists
