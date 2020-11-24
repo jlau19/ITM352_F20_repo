@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <link href="style.css" rel="stylesheet">
+
+    <script>
+    /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
+    For e-Commerce Web-site Cherry On Top.
+    Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! All codes modified from previous labs and from screencast examples unless specified. Login form and register form modified from W3Schools template. */
+    </script>
+
+</head>
+<body>
+    <br>
+    <br>
+    <br>
+    <nav class="navbar">
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./store">Products</a></li>
+    </nav>
+
+    <form name="register_form" action="/process_register" method="POST">
+        <div class="container">
+          <h2>Register</h2>
+          <p>Please fill in this form to create an account.</p>
+          <hr>
+                
+          <p><label for="name"><b>First & Last Name:</b></label><br>
+          <input type="text" placeholder="Enter name" name="name" id="name" required></p>
+                
+          <p><label for="username"><b>Create a Username:</b></label><br>
+          <input type="text" placeholder="Enter username" name="username" id="username" required></p>
+      
+          <p><label for="password"><b>Create a Password:</b></label><br>
+          <input type="password" placeholder="Enter password" name="password" id="password" required></p>
+      
+          <p><label for="repeat_password"><b>Confirm Password:</b></label><br>
+          <input type="password" placeholder="Enter password again" name="repeat_password" id="repeat_password" required></p>
+                
+          <p><label for="email"><b>Email</b></label><br>
+          <input type="text" placeholder="Enter Email" name="email" id="email" required></p>
+          <hr>
+      
+          <p><button type="submit">Register</button></p>
+        </div>
+          <p>Already have an account? <a href="/login"><font color="black">Log in here</font></a>.</p>
+</body>
+</html>

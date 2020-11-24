@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cherry On Top</title>
+
+    <script>
+    /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
+    For e-Commerce Web-site Cherry On Top.
+    Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! All codes modified from previous labs and from screencast examples unless specified. Login form and register form modified from W3Schools template. */
+
+    // Function to check whether a quantity is a non-negative integer
+    function isNonNegInt(q, return_errors = false) {
+        errors = []; // assume no errors at first
+        if (Number(q) != q) errors.push('<font color="red">Not a number!</font>'); // Check if string is a number value
+        if(q == '') q = 0; // for empty textboxes
+        else if (q < 0) errors.push('<font color="red">Negative value!</font>'); // Check if it is non-negative
+        else if (parseInt(q) != q) errors.push('<font color="red">Not an integer!</font>'); // Check that it is an integer
+        return return_errors ? errors : (errors.length == 0);
+    }
+
+    // Lab example to check quantity and display errors
+    function checkQuantityTextbox(theTextbox) {
+        errs = isNonNegInt(theTextbox.value, true);
+        if (errs.length == 0) errs = ['You want:'];
+        if (theTextbox.value.trim() == '') errs = ['Quantity'];
+        document.getElementById(theTextbox.name + '_label').innerHTML = errs.join(" ");
+    }
+    </script>
+
+</head>
+
+<body>
+    <form name="product_selection_form" action="/process_invoice" method="POST">
+        <header>
+        <h1>Cherry On Top</h1>
+        <h2>Shop all of our cherry accessories!</h2>
+        </header>
+
+        <nav class="navbar">
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./store">Products</a></li>
+        </nav>
+        <div>
+            <main>
+                ${display_products()}
+            </main>
+        </div>
+        <p><center><input type="submit" value="Click here to purchase" name="purchase_submit"></center></p>
+    </form>
+      <font size="2"><p>Disclaimer: This is an assignment for ITM 352 - UH Manoa Fall 2020. This is not a real store. All product images/designs belong to their respective websites/owners: AliExpress (Cherry Hat), Gucci (Cherry Chain Bag), Louis Vuitton (Cherry Travel Bag), Socksmith (Cherry Socks), DazzledByJewels (Cherry Earrings), Broken English Jewelry (Cherry Ring), Finn Jewelry (Cherry Necklace), Double Header USA (Cherry Bracelet). Thank you!</p></font>
+    <footer>
+        <h1>~Stay Cherry~</h1>
+    </footer>
+</body>
+
+</html>
