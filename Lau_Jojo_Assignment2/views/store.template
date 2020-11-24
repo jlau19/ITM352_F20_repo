@@ -10,8 +10,9 @@
     <script>
     /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
     For e-Commerce Web-site Cherry On Top.
-    Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! All codes modified from previous labs and from screencast examples unless specified. Login form and register form modified from W3Schools template. */
+    Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! All codes modified from previous labs and from screencast examples unless specified. This page is modified from Assignment 1 MVC examples */
 
+    // Lab 11 Ex 4
     // Function to check whether a quantity is a non-negative integer
     function isNonNegInt(q, return_errors = false) {
         errors = []; // assume no errors at first
@@ -22,7 +23,8 @@
         return return_errors ? errors : (errors.length == 0);
     }
 
-    // Lab example to check quantity and display errors
+    // Lab 12 Ex 1
+    // Check quantity and display errors
     function checkQuantityTextbox(theTextbox) {
         errs = isNonNegInt(theTextbox.value, true);
         if (errs.length == 0) errs = ['You want:'];

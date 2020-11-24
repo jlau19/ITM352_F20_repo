@@ -1,6 +1,8 @@
 /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
 For e-Commerce Web-site Cherry On Top.
-Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! All codes modified from previous labs and from screencast examples unless specified. Login form and register form modified from W3Schools template. */
+Special thanks to Professor Dan Port for the screencast helps and examples on this assignment!
+All codes modified from previous labs and from screencast examples as noted in comments unless specified. */
+
 
 // To access code from node packages
 var express = require('express');
@@ -13,6 +15,7 @@ var app = express();
 var quantity_data;
 const user_data_filename = 'user_data.json';
 
+// lab 14 Ex 2
 // check if file exists before reading
 if (fs.existsSync(user_data_filename)) {
     stats = fs.statSync(user_data_filename);
@@ -21,9 +24,11 @@ if (fs.existsSync(user_data_filename)) {
     users_reg_data = JSON.parse(data);
 }
 
+// Lab 13 Ex 3
 // Parse body of requests with application/x-www-form-urlencoded content type
 app.use(myParser.urlencoded({ extended: true }));
 
+// Assignment 1 MVC server example, views templates learned from Lab 13 Ex 4
 // Response when /store is requested
 app.get("/store", function (request, response) {
     var contents = fs.readFileSync('./views/store.template', 'utf8');
@@ -48,12 +53,14 @@ app.get("/store", function (request, response) {
     }
 });
 
+// Lab 14 Ex 3
 // Response when /login is requested
 app.get("/login", function (request, response) {
     var contents = fs.readFileSync('./views/login.template', 'utf8');
     response.send(eval('`' + contents + '`')); // render template string
 });
 
+// Lab 11 Ex 4
 // Function to check whether a quantity is a non-negative integer
 function isNonNegInt(q, returnErrors = false) {
     errors = []; // assume no errors at first
@@ -64,10 +71,11 @@ function isNonNegInt(q, returnErrors = false) {
     return returnErrors ? errors : ((errors.length > 0) ? false : true);
 };
 
+// Lab 13 Ex 3
 // Response when /process_invoice is requested, when purchase form is submitted
 app.post("/process_invoice", function (request, response) {
     let POST = request.body;
-    is_valid = true; // Starts out true, idea of this from Britnie Roach
+    is_valid = true; // Starts out true, idea of using a variable is from Britnie Roach
 
     if (typeof POST['purchase_submit'] != 'undefined') {
 
@@ -101,6 +109,7 @@ app.post("/process_invoice", function (request, response) {
     }
 });
 
+// Lab 14 Ex 3, Professor Dan Port's in-class workshop help
 // Response when process_login is requested from login
 app.post("/process_login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
@@ -117,7 +126,7 @@ app.post("/process_login", function (request, response) {
             var contents = fs.readFileSync('./views/invoice.template', 'utf8');
             response.send(eval('`' + contents + '`')); // render template string
 
-            // Calls on this function to display invoice table
+            // Calls on this function to display invoice table (Assignment 1 MVC example)
             function display_invoice_table_rows() {
                 subtotal = 0;
                 str = '';
@@ -174,20 +183,24 @@ app.post("/process_login", function (request, response) {
     }
 });
 
+// Lab 14 Ex 4
 // Response when /register is requested
 app.get("/register", function (request, response) {
     var contents = fs.readFileSync('./views/register.template', 'utf8');
     response.send(eval('`' + contents + '`')); // render template string
 });
 
+// Lab 14 Ex 4
 // Response when /process_register is requested
 app.post("/process_register", function (request, response) {
     /* process a simple register form
     validate the reg info. if all data is valid, write to the user_data_filename */
     var err = []; // Starts errors as empty
 
-    // Name validation
-    // Reg expressions found/modified from stackoverflow & w3resource
+    /* The following are validations of name, username, password, and email.
+    All expressions modified from https://www.w3resource.com/javascript/form/javascript-sample-registration-form-validation.php or stackoverflow */
+
+    // Name validations
     if ((/^[a-zA-Z]+[ ]+[a-zA-Z]+$/).test(request.body.name) == false) {
         err.push('Enter a first and last name that contains letters only');
     }
@@ -195,19 +208,18 @@ app.post("/process_register", function (request, response) {
         err.push('Name must be 30 characters or less');
     }
 
-    // Username validation
+    // Username validations
     if (typeof users_reg_data[request.body.username] != 'undefined') {
         err.push('This username is already taken');
     }
     if (request.body.username.length < 4 || request.body.username.length > 10) {
         err.push('Username must be between 4-10 characters');
     }
-    // Reg expressions found/modified from stackoverflow & w3resource
     if ((/^[0-9a-zA-Z]+$/).test(request.body.username) == false) {
         err.push('Username must contain letters and numbers only');
     }
 
-    // Password validation
+    // Password validations
     if (request.body.password.length < 6) {
         err.push('Password needs a minimum of 6 characters');
     }
@@ -215,7 +227,8 @@ app.post("/process_register", function (request, response) {
         err.push('Passwords do not match');
     }
 
-    // Email validation. Found and modified from stackoverflow & w3resource
+    // Email validation
+    // Modified from https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
     if ((/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(request.body.email) == false) {
         err.push('Email address is invalid');
     }
@@ -234,12 +247,11 @@ app.post("/process_register", function (request, response) {
         // rediret to login page
         response.redirect('./loginsuccess.html');   
     }
+    // Displays all errors in error page if there are any
     if (err.length > 0) {
-        // Displays all errors in error page if there are any
         errs = err.join('! ');
         var contents = fs.readFileSync('./views/errors/regerror.template', 'utf8');
         response.send(eval('`' + contents + '`')); // render template string
-
     }
 });
 
