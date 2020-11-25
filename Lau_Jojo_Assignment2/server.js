@@ -246,9 +246,8 @@ app.post("/process_register", function (request, response) {
         fs.writeFileSync(user_data_filename, reg_info_str);
         // rediret to login page
         response.redirect('./loginsuccess.html');   
-    }
+    } else {
     // Displays all errors in error page if there are any
-    if (err.length > 0) {
         errs = err.join('! ');
         var contents = fs.readFileSync('./views/errors/regerror.template', 'utf8');
         response.send(eval('`' + contents + '`')); // render template string
