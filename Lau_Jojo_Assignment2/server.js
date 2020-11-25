@@ -209,7 +209,7 @@ app.post("/process_register", function (request, response) {
     }
 
     // Username validations
-    if (typeof users_reg_data[request.body.username] != 'undefined') {
+    if (typeof users_reg_data[request.body.username.toLowerCase()] != 'undefined') {
         err.push('This username is already taken');
     }
     if (request.body.username.length < 4 || request.body.username.length > 10) {
