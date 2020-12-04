@@ -9,9 +9,16 @@ var products = require('./public/products.json');
 var fs = require('fs');
 // Create an express app with reference to express
 var app = express();
+var cookieParser = require('cookie-parser');
+//var session = require('express-session');
+
 // Variables to use later
 var quantity_data;
 const user_data_filename = 'user_data.json';
+
+// Lab 15 Ex 1 & 2, to use cookie and session
+app.use(cookieParser());
+//app.use(session({secret: "ITM352 rocks!"}));
 
 // check if file exists before reading
 if (fs.existsSync(user_data_filename)) {
@@ -24,20 +31,92 @@ if (fs.existsSync(user_data_filename)) {
 // Parse body of requests with application/x-www-form-urlencoded content type
 app.use(myParser.urlencoded({ extended: true }));
 
-// Response when /store is requested
-app.get("/store", function (request, response) {
-    var contents = fs.readFileSync('./views/store.template', 'utf8');
+// Response when /jewelry is requested
+app.get("/jewelry", function (request, response) {
+    var contents = fs.readFileSync('./views/jewelry.template', 'utf8');
     response.send(eval('`' + contents + '`')); // render template string
 
-    // Calls on this function to display products in /store page
-    function display_products() {
+    // Calls on this function to display products in /jewelry page
+    function display_jewelry() {
         str = '';
-        for (i = 0; i < products.length; i++) {
+        for (i = 0; i < products.jewelry.length; i++) {
             str += `
                 <section class="item">
-                    <h3>${products[i].name}</h3>
-                    <p><img src="${products[i].image}"></p>
-                    <p>$${products[i].price.toFixed(2)}</p>
+                    <h3>${products.jewelry[i].name}</h3>
+                    <p><img src="${products.jewelry[i].image}"></p>
+                    <p>$${products.jewelry[i].price.toFixed(2)}</p>
+                    <p><label id="quantity${i}_label"}">Quantity:</label></p>
+                    <p><input type="text" placeholder="Enter amount" name="quantity${i}"
+                    onkeyup="checkQuantityTextbox(this);"></p>
+                </section>
+            `;
+        }
+        return str;
+    }
+});
+
+// Response when /bags is requested
+app.get("/bags", function (request, response) {
+    var contents = fs.readFileSync('./views/bags.template', 'utf8');
+    response.send(eval('`' + contents + '`')); // render template string
+
+    // Calls on this function to display products in /bags page
+    function display_bags() {
+        str = '';
+        for (i = 0; i < products.bags.length; i++) {
+            str += `
+                <section class="item">
+                    <h3>${products.bags[i].name}</h3>
+                    <p><img src="${products.bags[i].image}"></p>
+                    <p>$${products.bags[i].price.toFixed(2)}</p>
+                    <p><label id="quantity${i}_label"}">Quantity:</label></p>
+                    <p><input type="text" placeholder="Enter amount" name="quantity${i}"
+                    onkeyup="checkQuantityTextbox(this);"></p>
+                </section>
+            `;
+        }
+        return str;
+    }
+});
+
+// Response when /hats is requested
+app.get("/hats", function (request, response) {
+    var contents = fs.readFileSync('./views/hats.template', 'utf8');
+    response.send(eval('`' + contents + '`')); // render template string
+
+    // Calls on this function to display products in /hats page
+    function display_hats() {
+        str = '';
+        for (i = 0; i < products.hats.length; i++) {
+            str += `
+                <section class="item">
+                    <h3>${products.hats[i].name}</h3>
+                    <p><img src="${products.hats[i].image}"></p>
+                    <p>$${products.hats[i].price.toFixed(2)}</p>
+                    <p><label id="quantity${i}_label"}">Quantity:</label></p>
+                    <p><input type="text" placeholder="Enter amount" name="quantity${i}"
+                    onkeyup="checkQuantityTextbox(this);"></p>
+                </section>
+            `;
+        }
+        return str;
+    }
+});
+
+// Response when /socks is requested
+app.get("/socks", function (request, response) {
+    var contents = fs.readFileSync('./views/socks.template', 'utf8');
+    response.send(eval('`' + contents + '`')); // render template string
+
+    // Calls on this function to display products in /socks page
+    function display_socks() {
+        str = '';
+        for (i = 0; i < products.socks.length; i++) {
+            str += `
+                <section class="item">
+                    <h3>${products.socks[i].name}</h3>
+                    <p><img src="${products.socks[i].image}"></p>
+                    <p>$${products.socks[i].price.toFixed(2)}</p>
                     <p><label id="quantity${i}_label"}">Quantity:</label></p>
                     <p><input type="text" placeholder="Enter amount" name="quantity${i}"
                     onkeyup="checkQuantityTextbox(this);"></p>

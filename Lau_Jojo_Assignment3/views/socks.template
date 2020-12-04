@@ -10,7 +10,8 @@
     <script>
     /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
     For e-Commerce Web-site Cherry On Top.
-    Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! All codes modified from previous labs and from screencast examples unless specified. Login form and register form modified from W3Schools template. */
+    Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! All codes modified from previous labs and from screencast examples unless specified.
+    Right aligned navbar, login form, and register form modified from W3Schools tutorial and template. */
 
     // Function to check whether a quantity is a non-negative integer
     function isNonNegInt(q, return_errors = false) {
@@ -42,16 +43,26 @@
 
         <nav class="navbar">
             <li><a href="./index.html">Home</a></li>
-            <li><a href="./store">Products</a></li>
+            <li><a href="./jewelry">Jewelry</a></li>
+            <li><a href="./bags">Bags</a></li>
+            <li><a href="./hats">Hats</a></li>
+            <li><a href="./socks">Socks</a></li>
+            <nav class="topnav-right">
+                <li><a href="./login">Login</a></li>
+                <li><a href="./cart.html">Cart</a></li>
+            </nav>
         </nav>
+
+        <h2><center>Socks</center></h2>
+
         <div>
             <main>
-                ${display_products()}
+                ${display_socks()}
             </main>
         </div>
         <p><center><input type="submit" value="Click here to purchase" name="purchase_submit"></center></p>
     </form>
-      <font size="2"><p>Disclaimer: This is an assignment for ITM 352 - UH Manoa Fall 2020. This is not a real store. All product images/designs belong to their respective websites/owners: AliExpress (Cherry Hat), Gucci (Cherry Chain Bag), Louis Vuitton (Cherry Travel Bag), Socksmith (Cherry Socks), DazzledByJewels (Cherry Earrings), Broken English Jewelry (Cherry Ring), Finn Jewelry (Cherry Necklace), Double Header USA (Cherry Bracelet). Thank you!</p></font>
+      <font size="2"><p>Disclaimer: This is an assignment for ITM 352 - UH Manoa Fall 2020. This is not a real store. All product images/designs belong to their respective websites/owners: DazzledByJewels (Cherry Earrings), Broken English Jewelry (Cherry Ring), Double Header USA (Cherry Bracelet), Gucci (Cherry Chain Bag), Louis Vuitton (Cherry Travel Bag), Coach (Cherry Messenger Bag), AliExpress (Black Cherry Hat), Forever 21 (Pink Cherry Hat), Socksmith (Pink Cherry Socks), Hey Viv (White Cherry Socks). Thank you!</p></font>
     <footer>
         <h1>~Stay Cherry~</h1>
     </footer>

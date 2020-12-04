@@ -44,8 +44,12 @@ li{
     /* Styles list in navigation bar */
     list-style-type: none;
     display: inline;
-    margin: 25px;
+    margin: 10px;
 }
+.topnav-right {
+    /* Right-aligned section inside the top navigation */
+    float: right;
+  }
 a{
     /* Styles text in navigation bar */
     color: white;

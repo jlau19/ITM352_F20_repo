@@ -1,42 +1,60 @@
-[
-    {
-        "name": "Cherry Hat",
-        "price": 25.00,
-        "image": "./images/hat.jpg"
-    },
-    {
-        "name": "Cherry Chain Bag",
-        "price": 175.00,
-        "image": "./images/bag1.jpg"
-    },
-    {
-        "name": "Cherry Travel Bag",
-        "price": 240.00,
-        "image": "./images/bag2.jpg"
-    },
-    {
-        "name": "Cherry Socks",
-        "price": 20.00,
-        "image": "./images/socks.jpg"
-    },
-    {
-        "name": "Cherry Earrings",
-        "price": 30.00,
-        "image": "./images/earrings.jpg"
-    },
-    {
-        "name": "Cherry Ring",
-        "price": 50.00,
-        "image": "./images/ring.jpg"
-    },
-    {
-        "name": "Cherry Necklace",
-        "price": 70.00,
-        "image": "./images/necklace.jpg"
-    },
-    {
-        "name": "Cherry Bracelet",
-        "price": 65.00,
-        "image": "./images/bracelet.jpg"
-    }
-]
+{
+    "jewelry": [
+        {
+            "name": "Cherry Earrings",
+            "price": 30.00,
+            "image": "./images/earrings.jpg"
+        },
+        {
+            "name": "Cherry Ring",
+            "price": 50.00,
+            "image": "./images/ring.jpg"
+        },
+        {
+            "name": "Cherry Bracelet",
+            "price": 65.00,
+            "image": "./images/bracelet.jpg"
+        }
+    ],
+    "bags": [
+        {
+            "name": "Cherry Chain Bag",
+            "price": 175.00,
+            "image": "./images/bag1.jpg"
+        },
+        {
+            "name": "Cherry Messenger Bag",
+            "price": 225.00,
+            "image": "./images/bag2.jpg"
+        },
+        {
+            "name": "Cherry Travel Bag",
+            "price": 270.00,
+            "image": "./images/bag3.jpg"
+        }
+    ],
+    "hats": [
+        {
+            "name": "Black Cherry Hat",
+            "price": 22.00,
+            "image": "./images/hat.jpg"
+        },
+        {
+            "name": "Pink Cherry Hat",
+            "price": 25.00,
+            "image": "./images/hat2.jpg"
+        }
+    ],
+    "socks": [
+        {
+            "name": "Pink Cherry Socks",
+            "price": 20.00,
+            "image": "./images/socks.jpg"
+        },
+        {
+            "name": "White Cherry Socks",
+            "price": 23.00,
+            "image": "./images/socks2.jpg"
+        }
+    ]
+}

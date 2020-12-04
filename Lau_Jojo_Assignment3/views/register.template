@@ -10,7 +10,8 @@
     <script>
     /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
     For e-Commerce Web-site Cherry On Top.
-    Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! All codes modified from previous labs and from screencast examples unless specified. Login form and register form modified from W3Schools template. */
+    Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! All codes modified from previous labs and from screencast examples unless specified.
+    Right aligned navbar, login form, and register form modified from W3Schools tutorial and template. */
     </script>
 
 </head>
@@ -20,7 +21,14 @@
     <br>
     <nav class="navbar">
       <li><a href="./index.html">Home</a></li>
-      <li><a href="./store">Products</a></li>
+      <li><a href="./jewelry">Jewelry</a></li>
+      <li><a href="./bags">Bags</a></li>
+      <li><a href="./hats">Hats</a></li>
+      <li><a href="./socks">Socks</a></li>
+        <nav class="topnav-right">
+          <li><a href="./login">Login</a></li>
+          <li><a href="./cart.html">Cart</a></li>
+        </nav>
     </nav>
 
     <form name="register_form" action="/process_register" method="POST">

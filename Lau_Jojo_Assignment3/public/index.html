@@ -31,16 +31,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cherry On Top</title>
+
+    <script>
+        var products_data;
+        loadJSON('get_products_data', function(response) {
+             // Parsing JSON string into object
+             products_data = JSON.parse(response);
+        });
+        var this_product_key = ''
+        </script>
 </head>
 
 <body>
     <br>
     <br>
+    <script> nav_bar(this_product_key, products_data);</script>
+
     <div>
         <p>
         <h1>~Welcome to Cherry On Top~</h1>
         </p>
-        <a href="./store"><img src="./images/cherry.gif" height="50%" width="50%"></a>
+        <a href="./jewelry"><img src="./images/cherry.gif" height="50%" width="50%"></a>
         <h1>Click the cherry to start shopping!</h1>
     </div>
 </body>
