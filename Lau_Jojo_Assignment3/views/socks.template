@@ -10,8 +10,7 @@
     <script>
     /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
     For e-Commerce Web-site Cherry On Top.
-    Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! All codes modified from previous labs and from screencast examples unless specified.
-    Right aligned navbar, login form, and register form modified from W3Schools tutorial and template. */
+    Special thanks to Professor Dan Port for the screencast helps and examples on this assignment! All codes modified from previous labs and from screencast examples unless specified. This page is modified from Assignment 1 MVC examples and SmartPhoneProducts WODs */
 
     // Function to check whether a quantity is a non-negative integer
     function isNonNegInt(q, return_errors = false) {
