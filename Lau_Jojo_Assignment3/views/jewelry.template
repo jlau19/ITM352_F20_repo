@@ -60,9 +60,9 @@
                 ${display_jewelry()}
             </main>
         </div>
-        <p><center><input type="submit" value="Click here to purchase" name="purchase_submit"></center></p>
+        <p><center><input type="submit" value="Add to cart" name="purchase_submit"></center></p>
     </form>
-      <font size="2"><p>Disclaimer: This is an assignment for ITM 352 - UH Manoa Fall 2020. This is not a real store. All product images/designs belong to their respective websites/owners: DazzledByJewels (Cherry Earrings), Broken English Jewelry (Cherry Ring), Double Header USA (Cherry Bracelet), Gucci (Cherry Chain Bag), Louis Vuitton (Cherry Travel Bag), Coach (Cherry Messenger Bag), AliExpress (Black Cherry Hat), Forever 21 (Pink Cherry Hat), Socksmith (Pink Cherry Socks), Hey Viv (White Cherry Socks). Thank you!</p></font>
+      <font size="2"><p>Disclaimer: This is an assignment for ITM 352 - UH Manoa Fall 2020. This is not a real store. All product images/designs belong to their respective websites/owners: DazzledByJewels (Cherry Earrings), Broken English Jewelry (Cherry Ring), Double Header USA (Cherry Bracelet), Gucci (Cherry Chain Bag), Louis Vuitton (Cherry Travel Bag), Coach (Cherry Messenger Bag), AliExpress (Black Cherry Hat), Forever 21 (Pink Cherry Hat), Home Fashion DIY (Blue Cherry Hat), Socksmith (Pink Cherry Socks), Hey Viv (White Cherry Socks), WestSocks (Black Cherry Socks). Thank you!</p></font>
     <footer>
         <h1>~Stay Cherry~</h1>
     </footer>

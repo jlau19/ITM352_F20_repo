@@ -24,6 +24,7 @@ app.get('/use_session', function (request, response) {
     if(typeof request.session.id != 'undefined') {
         response.send(`welcome, your session ID is ${request.session.id}`)
     }
+    request.session.destroy();
 });
 
 app.get('/set_cookie', function (request, response) {
@@ -42,13 +43,20 @@ app.get('/use_cookie', function (request, response) {
 
 app.get("/login", function (request, response) {
     // Give a simple login form
+    console.log(request.session);
     if(typeof request.session.lastLogin != 'undefined') {
         lastLogin = request.session.lastLogin;
     } else {
         lastLogin = 'First login!';
     }
+    if(typeof request.cookies.username != 'undefined') {
+        welcome_str = request.cookies.username;
+    } else {
+        welcome_str = 'IDK';
+    }
     str = `
 <body>
+Welcome back ${welcome_str}<br>
 Last Login: ${lastLogin}
 <form action="process_login" method="POST">
 <input type="text" name="username" size="40" placeholder="enter username" ><br />
@@ -62,13 +70,14 @@ Last Login: ${lastLogin}
 
 app.post("/process_login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
-    console.log(request.body);
+    console.log(`${request.body.username} logged in on ${request.session.lastLogin}`);
     // if user exists, get their password
     if (typeof users_reg_data[request.body.username] != 'undefined') {
         if (request.body.password == users_reg_data[request.body.username].password) {
             var now = new Date();
             request.session.lastLogin = now.getTime();
             console.log(`${request.body.username} logged in on ${request.session.lastLogin}`);
+            response.cookie('username', request.body.username, {maxAge: 60*1000});
             response.send(`Thank you ${request.body.username} for logging in.`);
         } else {
             response.send(`Hey! ${request.body.password} does not match what we have for you!`);

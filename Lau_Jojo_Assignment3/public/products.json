@@ -43,6 +43,11 @@
             "name": "Pink Cherry Hat",
             "price": 25.00,
             "image": "./images/hat2.jpg"
+        },
+        {
+            "name": "Blue Cherry Hat",
+            "price": 27.00,
+            "image": "./images/hat3.jpg"
         }
     ],
     "socks": [
@@ -55,6 +60,11 @@
             "name": "White Cherry Socks",
             "price": 23.00,
             "image": "./images/socks2.jpg"
+        },
+        {
+            "name": "Black Cherry Socks",
+            "price": 25.00,
+            "image": "./images/socks3.jpg"
         }
     ]
 }

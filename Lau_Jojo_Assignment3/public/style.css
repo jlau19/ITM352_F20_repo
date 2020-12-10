@@ -38,7 +38,7 @@ h2{
 nav{
     /* Styling the navigation bar */
     background: #ad5273;
-    line-height: 30px;
+    line-height: 40px;
 }
 li{
     /* Styles list in navigation bar */
@@ -54,6 +54,7 @@ a{
     /* Styles text in navigation bar */
     color: white;
     font-style: italic;
+    font-size: larger;
 }
 h3{
     /* Styles all in <h3> */
