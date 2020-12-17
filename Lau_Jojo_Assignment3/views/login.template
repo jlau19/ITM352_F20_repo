@@ -6,29 +6,31 @@
     <title>Login</title>
     
     <link href="style.css" rel="stylesheet">
+    <script src="./functions.js"></script>
 
     <script>
     /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
     For e-Commerce Web-site Cherry On Top.
-    This page is modified from W3Schools template https://www.w3schools.com/howto/howto_css_register_form.asp */
+    This page is modified from W3Schools template https://www.w3schools.com/howto/howto_css_register_form.asp
+    Welcome back message and last login time from Lab 15 Ex 2 & Ex 3 */
     </script>
 
 </head>
 <body>
     <br>
+    Welcome back, ${welcome_str}!<br>
+    Last Login: ${lastLogin}<br>
     <br>
     <br>
-      <nav class="navbar">
-        <li><a href="./index.html">Home</a></li>
-        <li><a href="./jewelry">Jewelry</a></li>
-        <li><a href="./bags">Bags</a></li>
-        <li><a href="./hats">Hats</a></li>
-        <li><a href="./socks">Socks</a></li>
-          <nav class="topnav-right">
-            <li><a href="./login">Login</a></li>
-            <li><a href="./cart.html">Cart</a></li>
-          </nav>
-      </nav>
+    
+    <h4>
+    &nbsp&nbsp&nbsp;
+    <a href='index.html'>HOME<a>&nbsp&nbsp&nbsp;
+    <a href='./products.html?products_key=jewelry'>jewelry<a>&nbsp&nbsp&nbsp;
+    <a href='./products.html?products_key=bags'>bags<a>&nbsp&nbsp&nbsp;
+    <a href='./products.html?products_key=hats'>hats<a>&nbsp&nbsp&nbsp;
+    <a href='./products.html?products_key=socks'>socks<a>&nbsp&nbsp&nbsp;
+    </h4>
     
     <form name="login_form" action="/process_login" method="POST">
     <div class="container">

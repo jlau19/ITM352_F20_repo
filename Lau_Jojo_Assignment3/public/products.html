@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+
+    <script src="./functions.js"></script>
+    <script>
+        /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
+        For e-Commerce Web-site Cherry On Top.
+        This page is modified from Professor Port's working examples during his Assignment 3 workshop class, and Assignment 3 example codes: Examples 1 & 2. */
+        var products;
+        var total = 0;
+
+        loadJSON('get_products', function (response) {
+            // Parsing JSON string into object
+            products_data = JSON.parse(response);
+        });
+
+        // get the query string
+        let params = (new URL(document.location)).searchParams;
+        if (params.has('products_key')) {
+            var this_product_key = params.get('products_key');
+        } else {
+            document.write('no products key in query string');
+            document.stop;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>Cherry On Top</h1>
+        <h2>Shop all of our cherry accessories!</h2>
+        <br>
+    </header>
+    <center>
+        <h3>
+            <a href='index.html'>HOME<a>&nbsp&nbsp&nbsp;
+                    <script>
+                        // Navigation bar
+                        nav_bar(this_product_key, products_data);
+                        var username = getCookie('username');
+                        if (username != "") {
+                            // Making space on the nav bar to separate left and right sides
+                            // If user is logged in, "Logout" will display
+                            document.write(`&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;
+                            <a href='./logout'>Logout ${username}<a>&nbsp&nbsp&nbsp;
+                            <a href='./cart.html'>Cart<a>`);
+                        } else {
+                            // If user is not logged in, "Login" will display
+                            document.write(`&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;
+                            <a href='login'>Login<a>&nbsp&nbsp&nbsp
+                            <a href='./cart'>Cart (<span id="cart_total">0</span>)<a>`);
+                        }
+
+                    </script>
+
+        </h3>
+    </center>
+
+    <div>
+        <script>
+            // This function takes a string assumed to be a key in the products array above to display and select the corresponding products
+            var order_str = '';
+            // get the particular products to display
+            products = products_data[this_product_key];
+            // Display title of product selection in capital letters
+            order_str += `<center><h2>${this_product_key.toUpperCase()}</h2></center><br>`;
+            // We put the whole table in the form so that anything entered in it will get submitted
+            order_str += `
+                <FORM action="add_to_cart" method="GET">
+                <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${this_product_key}">`;
+
+            // Displays products for specific product key
+            for (i = 0; i < products.length; i++) {
+                order_str += `
+                    <p><center><h3>${products[i]['name']}</p>
+                    <p><img src="${products[i]['image']}"></p>
+                    <p>$${products[i]['price'].toFixed(2)}</p>
+                    <p><label id="quantities[${i}]_label">Quantity:</label></p>
+                    <p><INPUT TYPE="TEXT" placeholder="Enter amount here" name="quantities[${i}]"
+                    onkeyup="checkQuantityTextbox(this);"></h3></center></p><br>`;
+            }
+            order_str += `<br>
+                <INPUT TYPE="SUBMIT"  name="Submit" value="Add to cart"><br><br>
+                </FORM>`;
+
+            document.write(order_str);
+        </script>
+    </div>
+</body>
+
+<font size="3">
+    <p>Disclaimer: This is an assignment for ITM 352 - UH Manoa Fall 2020. This is not a real store. All product
+        images/designs belong to their respective websites/owners: DazzledByJewels (Cherry Earrings), Broken English
+        Jewelry (Cherry Ring), Double Header USA (Cherry Bracelet), Gucci (Cherry Chain Bag), Louis Vuitton (Cherry
+        Travel Bag), Coach (Cherry Messenger Bag), AliExpress (Black Cherry Hat), Forever 21 (Pink Cherry Hat), Home
+        Fashion DIY (Blue Cherry Hat), Socksmith (Pink Cherry Socks), Hey Viv (White Cherry Socks), WestSocks (Black
+        Cherry Socks). Thank you!</p>
+</font>
+
+<footer>
+    <h1>~Stay Cherry~</h1>
+</footer>
+
+</html>

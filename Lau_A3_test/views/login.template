@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    
+    <link href="style.css" rel="stylesheet">
+    <script src="./functions.js"></script>
+
+    <script>
+    /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
+    For e-Commerce Web-site Cherry On Top.
+    This page is modified from W3Schools template https://www.w3schools.com/howto/howto_css_register_form.asp
+    Welcome back message and last login time from Lab 15 Ex 2 & Ex 3 */
+    </script>
+
+</head>
+<body>
+    <br>
+    Welcome back, ${welcome_str}!<br>
+    Last Login: ${lastLogin}<br>
+    <br>
+    <br>
+    
+    <h4>
+    &nbsp&nbsp&nbsp;
+    <a href='index.html'>HOME<a>&nbsp&nbsp&nbsp;
+    <a href='./products.html?products_key=jewelry'>jewelry<a>&nbsp&nbsp&nbsp;
+    <a href='./products.html?products_key=bags'>bags<a>&nbsp&nbsp&nbsp;
+    <a href='./products.html?products_key=hats'>hats<a>&nbsp&nbsp&nbsp;
+    <a href='./products.html?products_key=socks'>socks<a>&nbsp&nbsp&nbsp;
+    </h4>
+    
+    <form name="login_form" action="/add_to_cart" method="GET">
+    <div class="container">
+    <h2>Sign in to your account:</h2>
+    <hr>
+
+    <p><label for="username"><b>Username:</b></label><br>
+    <input type="text" placeholder="Enter username" name="username" id="username" required></p>
+
+    <p><label for="password"><b>Password:</b></label><br>
+    <input type="password" placeholder="Enter password" name="password" id="password" required></p>
+    <hr>
+
+    <p><button type="submit">Log In</button></p>
+  </div>
+    <p>Don't have an account? <a href="/register"><font color="black">Register here</font></a>.</p>
+</form>
+</body>
+</html>

@@ -6,20 +6,28 @@ All codes modified from previous labs and from screencast examples as noted in c
 // To access code from node packages
 var express = require('express');
 var myParser = require('body-parser');
-var products = require('./public/products.json');
+var products_data = require('./public/products.json');
 var fs = require('fs');
 // Create an express app with reference to express
 var app = express();
 var cookieParser = require('cookie-parser');
-//var session = require('express-session');
+var session = require('express-session');
 
 // Variables to use later
 var quantity_data;
 const user_data_filename = 'user_data.json';
 
+// Lab 13 Ex 3
+// Parse body of requests with application/x-www-form-urlencoded content type
+app.use(myParser.urlencoded({ extended: true }));
+
+app.post("/get_products", function (request, response) {
+    response.json(products_data);
+});
+
 // Lab 15 Ex 1 & 2, to use cookies and session
 app.use(cookieParser());
-//app.use(session({secret: "ITM352 rocks!"}));
+app.use(session({ secret: "ITM352 rocks!" }));
 
 // lab 14 Ex 2
 // check if file exists before reading
@@ -30,131 +38,111 @@ if (fs.existsSync(user_data_filename)) {
     users_reg_data = JSON.parse(data);
 }
 
-// Lab 13 Ex 3
-// Parse body of requests with application/x-www-form-urlencoded content type
-app.use(myParser.urlencoded({ extended: true }));
+// Assignment 3 code Example 2 for server.js 
+app.all('*', function (request, response, next) {
+    // need to initialize an object to store the cart in the session. We do it when there is any request so that we don't have to check it exists
+    if (typeof request.session.cart == 'undefined') {
+        request.session.cart = {};
+        console.log('empty cart created');
+    }
+    next();
+});
 
-/* /jewelry, /bags, /hats, /socks below modified from Assignment 1 MVC server example by Dan Port.
-Use of views templates learned from Lab 13 Ex 4 */
+app.get("/add_to_cart", function (request, response, next) {
+    var products_key = request.query['products_key']; // get the product key sent from the form post
+    var quantities = request.query['quantities'].map(Number); // Get quantities from the form post and convert strings from form post to numbers
 
-// Response when /jewelry is requested
-app.get("/jewelry", function (request, response) {
-    var contents = fs.readFileSync('./views/jewelry.template', 'utf8');
+    for (i = 0; i < quantities.length; i++) {
+        is_valid = true;
+
+        // Validates whether product selection form is empty
+        if (quantities[0] == 0 && quantities[1] == 0 && quantities[2] == 0) {
+            is_valid = false;
+        }
+
+        // Validates whether quantities are non-negative integers and are greater than 0
+        if (isNonNegInt(quantities[i]) == true && quantities[i] > 0) {
+            is_valid = true;
+        }
+
+        // If not non-negative integers, invalid
+        if (isNonNegInt(quantities[i]) == false) {
+            is_valid = false;
+        }
+    }
+
+    if (is_valid == true) {
+        request.session.cart[products_key] = quantities; // store the quantities array in the session cart object with the same products_key.
+        request.session.save();
+        console.log(request.session.cart);
+        var added_to_cart = fs.readFileSync('./views/added_to_cart.template', 'utf8');
+        response.send(eval('`' + added_to_cart + '`')); // render template string
+    } else {
+        var err_contents = fs.readFileSync('./views/errors/qtyerror.template', 'utf8');
+        response.send(eval('`' + err_contents + '`')); // render template string
+    }
+});
+
+app.get("/cart", function (request, response) {
+    console.log(request.session);
+    var contents = fs.readFileSync('./views/cart.template', 'utf8');
     response.send(eval('`' + contents + '`')); // render template string
 
-    // Calls on this function to display products in /jewelry page
-    function display_jewelry() {
+    // Calls on this function to display invoice table (Assignment 1 MVC example)
+    function display_product_rows() {
+        subtotal = 0;
         str = '';
-        for (i = 0; i < products.jewelry.length; i++) {
-            str += `
-                <section class="item">
-                    <h3>${products.jewelry[i].name}</h3>
-                    <p><img src="${products.jewelry[i].image}"></p>
-                    <p>$${products.jewelry[i].price.toFixed(2)}</p>
-                    <p><label id="quantity${i}_label"}">Quantity:</label></p>
-                    <p><input type="text" placeholder="Enter amount" name="quantity${i}"
-                    onkeyup="checkQuantityTextbox(this);"></p>
-                </section>
-            `;
+
+        for (i = 0; i < request.session.cart.property.length; i++) {
+            qty = 0;
+            val = request.session.cart.property[i];
+
+            if (isNonNegInt(val) && val > 0) {
+                qty = val;
+
+                // product row
+                extended_price = qty * products_data.property[i].price
+                subtotal += extended_price;
+                str += (`
+  <tr>
+    <td align="center" width="43%">${products_data.property[i]['name']}</td>
+    <td align="center" width="11%">${qty}</td>
+    <td align="center" width="13%">\$${products_data.property[i]['price']}</td>
+    <td align="center" width="54%">\$${extended_price}</td>
+  </tr>
+  `);
+            }
+            // Compute tax
+            tax_rate = 0.0575;
+            tax = tax_rate * subtotal;
+
+            // Compute shipping
+            if (subtotal <= 50) {
+                shipping = 2;
+            }
+            else if (subtotal <= 100) {
+                shipping = 5;
+            }
+            else {
+                shipping = 0.05 * subtotal; // 5% of subtotal
+            }
+
+            // Compute grand total
+            total = subtotal + tax + shipping;
         }
         return str;
     }
 });
 
-// Response when /bags is requested
-app.get("/bags", function (request, response) {
-    var contents = fs.readFileSync('./views/bags.template', 'utf8');
-    response.send(eval('`' + contents + '`')); // render template string
-
-    // Calls on this function to display products in /bags page
-    function display_bags() {
-        str = '';
-        for (i = 0; i < products.bags.length; i++) {
-            str += `
-                <section class="item">
-                    <h3>${products.bags[i].name}</h3>
-                    <p><img src="${products.bags[i].image}"></p>
-                    <p>$${products.bags[i].price.toFixed(2)}</p>
-                    <p><label id="quantity${i}_label"}">Quantity:</label></p>
-                    <p><input type="text" placeholder="Enter amount" name="quantity${i}"
-                    onkeyup="checkQuantityTextbox(this);"></p>
-                </section>
-            `;
-        }
-        return str;
-    }
+app.get("/get_cart", function (request, response) {
+    response.json(request.session.cart);
 });
-
-// Response when /hats is requested
-app.get("/hats", function (request, response) {
-    var contents = fs.readFileSync('./views/hats.template', 'utf8');
-    response.send(eval('`' + contents + '`')); // render template string
-
-    // Calls on this function to display products in /hats page
-    function display_hats() {
-        str = '';
-        for (i = 0; i < products.hats.length; i++) {
-            str += `
-                <section class="item">
-                    <h3>${products.hats[i].name}</h3>
-                    <p><img src="${products.hats[i].image}"></p>
-                    <p>$${products.hats[i].price.toFixed(2)}</p>
-                    <p><label id="quantity${i}_label"}">Quantity:</label></p>
-                    <p><input type="text" placeholder="Enter amount" name="quantity${i}"
-                    onkeyup="checkQuantityTextbox(this);"></p>
-                </section>
-            `;
-        }
-        return str;
-    }
-});
-
-// Response when /socks is requested
-app.get("/socks", function (request, response) {
-    var contents = fs.readFileSync('./views/socks.template', 'utf8');
-    response.send(eval('`' + contents + '`')); // render template string
-
-    // Calls on this function to display products in /socks page
-    function display_socks() {
-        str = '';
-        for (i = 0; i < products.socks.length; i++) {
-            str += `
-                <section class="item">
-                    <h3>${products.socks[i].name}</h3>
-                    <p><img src="${products.socks[i].image}"></p>
-                    <p>$${products.socks[i].price.toFixed(2)}</p>
-                    <p><label id="quantity${i}_label"}">Quantity:</label></p>
-                    <p><input type="text" placeholder="Enter amount" name="quantity${i}"
-                    onkeyup="checkQuantityTextbox(this);"></p>
-                </section>
-            `;
-        }
-        return str;
-    }
-});
-
-// Lab 14 Ex 3
-// Response when /login is requested
-app.get("/login", function (request, response) {
-    var contents = fs.readFileSync('./views/login.template', 'utf8');
-    response.send(eval('`' + contents + '`')); // render template string
-});
-
-// Lab 11 Ex 4
-// Function to check whether a quantity is a non-negative integer
-function isNonNegInt(q, returnErrors = false) {
-    errors = []; // assume no errors at first
-    if (Number(q) != q) errors.push('Not a number!');// Check if string is a number value
-    if (q == '') q = 0; // for empty textboxes
-    if (q < 0) errors.push('Negative value!'); // Check if it is non-negative
-    if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
-    return returnErrors ? errors : ((errors.length > 0) ? false : true);
-};
 
 // Lab 13 Ex 3
 // Response when /process_invoice is requested, when purchase form is submitted
 app.post("/process_invoice", function (request, response) {
     let POST = request.body;
+    console.log(POST);
     is_valid = true; // Starts out true, idea of using a variable is from Britnie Roach
 
     if (typeof POST['purchase_submit'] != 'undefined') {
@@ -182,75 +170,53 @@ app.post("/process_invoice", function (request, response) {
             quantity_data = POST;
             response.redirect('./login');
         } else {
-        // If is_valid is false, redirect to error page
-        var err_contents = fs.readFileSync('./views/errors/qtyerror.template', 'utf8');
-        response.send(eval('`' + err_contents + '`')); // render template string
+            // If is_valid is false, redirect to error page
+            var err_contents = fs.readFileSync('./views/errors/qtyerror.template', 'utf8');
+            response.send(eval('`' + err_contents + '`')); // render template string
         }
     }
+});
+
+// Lab 14 Ex 3
+// Response when /login is requested
+app.get("/login", function (request, response) {
+    // Lab 15 Ex 2 & 3
+    if (typeof request.session.lastLogin != 'undefined') {
+        lastLogin = request.session.lastLogin;
+    } else {
+        lastLogin = 'First login';
+    }
+    if (typeof request.cookies.username != 'undefined') {
+        welcome_str = request.cookies.username;
+    } else {
+        welcome_str = 'Anonymous';
+    }
+
+    var contents = fs.readFileSync('./views/login.template', 'utf8');
+    response.send(eval('`' + contents + '`')); // render template string
 });
 
 // Lab 14 Ex 3, Professor Dan Port's in-class workshop help
 // Response when process_login is requested from login
 app.post("/process_login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
-    var POST = request.body;
-    console.log(quantity_data);
+
     // Make username case insensitive
     user_name = request.body.username.toLowerCase();
 
     // if user exists
-    if (typeof users_reg_data[user_name] != 'undefined' && typeof quantity_data != 'undefined') {
+    if (typeof users_reg_data[user_name] != 'undefined' && typeof request.body != 'undefined') {
 
         // if the input password matches the one that's stored
         if (request.body.password == users_reg_data[user_name].password) {
-            var contents = fs.readFileSync('./views/invoice.template', 'utf8');
-            response.send(eval('`' + contents + '`')); // render template string
+            // Lab 15 Ex 2
+            var now = new Date();
+            request.session.lastLogin = now.getTime();
+            console.log(`${request.body.username} logged in on ${request.session.lastLogin}`);
+            response.cookie('username', request.body.username, { maxAge: 300 * 1000 });
 
-            // Calls on this function to display invoice table (Assignment 1 MVC example)
-            function display_invoice_table_rows() {
-                subtotal = 0;
-                str = '';
-                for (i = 0; i < products.length; i++) {
-                    qty = 0;
-                    val = quantity_data[`quantity${i}`];
+            response.redirect('./products.html?products_key=jewelry');
 
-                    if (isNonNegInt(val)) {
-                        qty = val;
-                    }
-                    if (qty > 0) {
-                        // product row
-                        extended_price = qty * products[i].price
-                        subtotal += extended_price;
-                        str += (`
-      <tr>
-        <td align="center" width="43%">${products[i].name}</td>
-        <td align="center" width="11%">${qty}</td>
-        <td align="center" width="13%">\$${products[i].price}</td>
-        <td align="center" width="54%">\$${extended_price}</td>
-      </tr>
-      `);
-                    }
-                }
-                // Compute tax
-                tax_rate = 0.0575;
-                tax = tax_rate * subtotal;
-
-                // Compute shipping
-                if (subtotal <= 50) {
-                    shipping = 2;
-                }
-                else if (subtotal <= 100) {
-                    shipping = 5;
-                }
-                else {
-                    shipping = 0.05 * subtotal; // 5% of subtotal
-                }
-
-                // Compute grand total
-                total = subtotal + tax + shipping;
-
-                return str;
-            }
         } else {
             // If passwords do not match, redirect to error page
             var err_contents = fs.readFileSync('./views/errors/pwerror.template', 'utf8');
@@ -325,7 +291,7 @@ app.post("/process_register", function (request, response) {
         reg_info_str = JSON.stringify(users_reg_data);
         fs.writeFileSync(user_data_filename, reg_info_str);
         // rediret to login page
-        response.redirect('./loginsuccess.html');   
+        response.redirect('./loginsuccess.html');
     } else {
         // Displays all errors in error page if there are any
         errs = err.join('! ');
@@ -334,6 +300,24 @@ app.post("/process_register", function (request, response) {
 
     }
 });
+
+// Lab 15 Ex 4
+// Response when user wants to log out
+app.get("/logout", function (request, response) {
+    request.session.destroy();
+    response.redirect('./logoutsuccess.html');
+});
+
+// Lab 11 Ex 4
+// Function to check whether a quantity is a non-negative integer
+function isNonNegInt(q, returnErrors = false) {
+    errors = []; // assume no errors at first
+    if (Number(q) != q) errors.push('Not a number!');// Check if string is a number value
+    if (q == '') q = 0; // for empty textboxes
+    if (q < 0) errors.push('Negative value!'); // Check if it is non-negative
+    if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
+    return returnErrors ? errors : ((errors.length > 0) ? false : true);
+};
 
 // Serve static files from public folder
 app.use(express.static('./public'));
