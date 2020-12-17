@@ -6,7 +6,7 @@ All codes modified from previous labs and from screencast examples as noted in c
 // To access code from node packages
 var express = require('express');
 var myParser = require('body-parser');
-var products_data = require('./public/products.json');
+var products_data = require('./public/products');
 var fs = require('fs');
 // Create an express app with reference to express
 var app = express();
@@ -53,7 +53,7 @@ app.all('*', function (request, response, next) {
     next();
 });
 
-app.post("/add_to_cart", function (request, response, next) {
+app.get("/add_to_cart", function (request, response, next) {
     console.log(request.body);
 
     //Validate update cart quantity.  If valid add to session.

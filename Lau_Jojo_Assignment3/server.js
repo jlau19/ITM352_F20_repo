@@ -84,30 +84,39 @@ app.get("/add_to_cart", function (request, response, next) {
 });
 
 app.get("/cart", function (request, response) {
-    console.log(request.session);
+    if (typeof request.cookies.username != 'undefined') {
+        user_name = request.cookies.username;
+        cart_str = `Hi ${user_name}, please review your shopping cart before purchasing!`;
+    } else {
+        user_name = 'Anonymous';
+        cart_str = `Hi ${user_name}, please review your shopping cart!`
+    }
+    
     var contents = fs.readFileSync('./views/cart.template', 'utf8');
     response.send(eval('`' + contents + '`')); // render template string
 
-    // Calls on this function to display invoice table (Assignment 1 MVC example)
-    function display_product_rows() {
+    // Calls on this function to display cart table (Assignment 1 MVC example)
+    function display_cart_rows() {
+
         subtotal = 0;
         str = '';
 
-        for (i = 0; i < request.session.cart.length; i++) {
+        for (i = 0; i < request.session.cart['jewelry'].length; i++) {
+
             qty = 0;
-            val = request.session.cart[i];
+            val = request.session.cart['jewelry'][i];
 
             if (isNonNegInt(val) && val > 0) {
                 qty = val;
 
                 // product row
-                extended_price = qty * products_data[i].price
+                extended_price = qty * products_data['jewelry'][i].price
                 subtotal += extended_price;
                 str += (`
   <tr>
-    <td align="center" width="43%">${products_data[i]['name']}</td>
+    <td align="center" width="43%">${products_data['jewelry'][i]['name']}</td>
     <td align="center" width="11%">${qty}</td>
-    <td align="center" width="13%">\$${products_data[i]['price']}</td>
+    <td align="center" width="13%">\$${products_data['jewelry'][i]['price']}</td>
     <td align="center" width="54%">\$${extended_price}</td>
   </tr>
   `);
@@ -129,9 +138,11 @@ app.get("/cart", function (request, response) {
 
             // Compute grand total
             total = subtotal + tax + shipping;
+
         }
         return str;
     }
+
 });
 
 app.get("/get_cart", function (request, response) {
@@ -139,9 +150,10 @@ app.get("/get_cart", function (request, response) {
 });
 
 // Lab 13 Ex 3
-// Response when /process_invoice is requested, when purchase form is submitted
-app.post("/process_invoice", function (request, response) {
-    let POST = request.body;
+// Response when /purchase is requested at shopping cart page, loads invoice
+app.get("/purchase", function (request, response) {
+    // add invoice stuff here
+     /*let POST = request.body;
     console.log(POST);
     is_valid = true; // Starts out true, idea of using a variable is from Britnie Roach
 
@@ -164,7 +176,7 @@ app.post("/process_invoice", function (request, response) {
             if (isNonNegInt(val) == false) {
                 is_valid = false;
             }
-        }
+        } */
         // If is_valid stays true after all validations, redirect to login
         if (is_valid == true) {
             quantity_data = POST;
@@ -174,8 +186,7 @@ app.post("/process_invoice", function (request, response) {
             var err_contents = fs.readFileSync('./views/errors/qtyerror.template', 'utf8');
             response.send(eval('`' + err_contents + '`')); // render template string
         }
-    }
-});
+    });
 
 // Lab 14 Ex 3
 // Response when /login is requested
@@ -304,6 +315,7 @@ app.post("/process_register", function (request, response) {
 // Lab 15 Ex 4
 // Response when user wants to log out
 app.get("/logout", function (request, response) {
+    response.clearCookie("username");
     request.session.destroy();
     response.redirect('./logoutsuccess.html');
 });
