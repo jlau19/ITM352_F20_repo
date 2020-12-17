@@ -93,21 +93,21 @@ app.get("/cart", function (request, response) {
         subtotal = 0;
         str = '';
 
-        for (i = 0; i < request.session.cart.property.length; i++) {
+        for (i = 0; i < request.session.cart.length; i++) {
             qty = 0;
-            val = request.session.cart.property[i];
+            val = request.session.cart[i];
 
             if (isNonNegInt(val) && val > 0) {
                 qty = val;
 
                 // product row
-                extended_price = qty * products_data.property[i].price
+                extended_price = qty * products_data[i].price
                 subtotal += extended_price;
                 str += (`
   <tr>
-    <td align="center" width="43%">${products_data.property[i]['name']}</td>
+    <td align="center" width="43%">${products_data[i]['name']}</td>
     <td align="center" width="11%">${qty}</td>
-    <td align="center" width="13%">\$${products_data.property[i]['price']}</td>
+    <td align="center" width="13%">\$${products_data[i]['price']}</td>
     <td align="center" width="54%">\$${extended_price}</td>
   </tr>
   `);
