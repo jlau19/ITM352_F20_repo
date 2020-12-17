@@ -91,57 +91,57 @@ app.get("/cart", function (request, response) {
         user_name = 'Anonymous';
         cart_str = `Hi ${user_name}, please review your shopping cart!`
     }
-    
-    var contents = fs.readFileSync('./views/cart.template', 'utf8');
-    response.send(eval('`' + contents + '`')); // render template string
 
-    // Calls on this function to display cart table (Assignment 1 MVC example)
-    function display_cart_rows() {
+    subtotal = 0;
+    invoice_rows = '';
 
-        subtotal = 0;
-        str = '';
+    // For each product key in session cart array
+    for (pk in request.session.cart) {
 
-        for (i = 0; i < request.session.cart['jewelry'].length; i++) {
+        // For each specific item in the product key of session cart array
+        for (i = 0; i < request.session.cart[pk].length; i++) {
 
             qty = 0;
-            val = request.session.cart['jewelry'][i];
+            val = request.session.cart[pk][i];
 
-            if (isNonNegInt(val) && val > 0) {
+            if (val > 0) {
                 qty = val;
 
                 // product row
-                extended_price = qty * products_data['jewelry'][i].price
+                extended_price = qty * products_data[pk][i].price
                 subtotal += extended_price;
-                str += (`
+                invoice_rows += (`
   <tr>
-    <td align="center" width="43%">${products_data['jewelry'][i]['name']}</td>
+    <td align="center" width="43%">${products_data[pk][i]['name']}</td>
     <td align="center" width="11%">${qty}</td>
-    <td align="center" width="13%">\$${products_data['jewelry'][i]['price']}</td>
+    <td align="center" width="13%">\$${products_data[pk][i]['price']}</td>
     <td align="center" width="54%">\$${extended_price}</td>
   </tr>
   `);
             }
-            // Compute tax
-            tax_rate = 0.0575;
-            tax = tax_rate * subtotal;
-
-            // Compute shipping
-            if (subtotal <= 50) {
-                shipping = 2;
-            }
-            else if (subtotal <= 100) {
-                shipping = 5;
-            }
-            else {
-                shipping = 0.05 * subtotal; // 5% of subtotal
-            }
-
-            // Compute grand total
-            total = subtotal + tax + shipping;
-
         }
-        return str;
     }
+    // Compute tax
+    tax_rate = 0.0575;
+    tax = tax_rate * subtotal;
+
+    // Compute shipping
+    if (subtotal <= 50) {
+        shipping = 2;
+    }
+    else if (subtotal <= 100) {
+        shipping = 5;
+    }
+    else {
+        shipping = 0.05 * subtotal; // 5% of subtotal
+    }
+
+    // Compute grand total
+    total = subtotal + tax + shipping;
+
+    // Directs to cart page
+    var contents = fs.readFileSync('./views/cart.template', 'utf8');
+    response.send(eval('`' + contents + '`')); // render template string
 
 });
 
@@ -153,40 +153,17 @@ app.get("/get_cart", function (request, response) {
 // Response when /purchase is requested at shopping cart page, loads invoice
 app.get("/purchase", function (request, response) {
     // add invoice stuff here
-     /*let POST = request.body;
-    console.log(POST);
-    is_valid = true; // Starts out true, idea of using a variable is from Britnie Roach
-
-    if (typeof POST['purchase_submit'] != 'undefined') {
-
-        for (i = 0; i < products.length; i++) {
-            var val = POST[`quantity${i}`];
-
-            // Validates whether product selection form is empty
-            if (POST.quantity0 == '' && POST.quantity1 == '' && POST.quantity2 == '' && POST.quantity3 == '' && POST.quantity4 == '' && POST.quantity5 == '' && POST.quantity6 == '' && POST.quantity7 == '') {
-                is_valid = false;
-            }
-
-            // Validates whether quantities are non-negative integers and greater than 0
-            if (isNonNegInt(val) && val > 0) {
-                is_valid = true;
-            }
-
-            // Validates whether quantities are not non-negative integers
-            if (isNonNegInt(val) == false) {
-                is_valid = false;
-            }
-        } */
-        // If is_valid stays true after all validations, redirect to login
-        if (is_valid == true) {
-            quantity_data = POST;
-            response.redirect('./login');
-        } else {
-            // If is_valid is false, redirect to error page
-            var err_contents = fs.readFileSync('./views/errors/qtyerror.template', 'utf8');
-            response.send(eval('`' + err_contents + '`')); // render template string
-        }
-    });
+    
+    // If is_valid stays true after all validations, redirect to login
+    if (is_valid == true) {
+        quantity_data = POST;
+        response.redirect('./login');
+    } else {
+        // If is_valid is false, redirect to error page
+        var err_contents = fs.readFileSync('./views/errors/qtyerror.template', 'utf8');
+        response.send(eval('`' + err_contents + '`')); // render template string
+    }
+});
 
 // Lab 14 Ex 3
 // Response when /login is requested

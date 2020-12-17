@@ -43,7 +43,7 @@
         <th style="text-align: center;" width="13%">Price</th>
         <th style="text-align: center;" width="54%">Extended price</th>
       </tr>
-        ${display_cart_rows()}
+        ${invoice_rows}
       <tr>
         <td style="text-align: center;" colspan="4" width="100%">&nbsp;</td>
       </tr>
