@@ -2,8 +2,6 @@
 For e-Commerce Web-site Cherry On Top.
 This page stores working functions for the application, from Professor Port's working examples during his Assignment 3 workshop class. */
 
-const { request } = require("express");
-
 // Professor Port's Assignment 3 example codes: Example 1
 // This function asks the server for a "service" and converts the response to text. 
 function loadJSON(service, callback) {

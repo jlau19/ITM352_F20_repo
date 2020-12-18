@@ -1,7 +1,7 @@
 /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
 For e-Commerce Web-site Cherry On Top.
-Special thanks to Professor Dan Port for the screencast helps and examples on this assignment!
-All codes modified from previous labs and from screencast examples as noted in comments unless specified. */
+Special thanks to Professor Dan Port for the workshop helps and examples on this assignment!
+All codes modified from previous labs/WODs and from screencast/Assignment examples as noted in comments unless specified. */
 
 // To access code from node packages
 var express = require('express');
@@ -14,8 +14,6 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var nodemailer = require('nodemailer');
 
-// Variables to use later
-var quantity_data;
 const user_data_filename = 'user_data.json';
 
 // Lab 13 Ex 3
@@ -26,15 +24,20 @@ app.use(myParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({ secret: "ITM352 rocks!" }));
 
+// Assignment 3 example code, Ex 1
 app.post("/get_products", function (request, response) {
     response.json(products_data);
+});
+
+// Assignment 3 example code, Ex 1
+app.post("/get_cart", function (request, response) {
+    response.json(request.session.cart);
 });
 
 // lab 14 Ex 2
 // check if file exists before reading
 if (fs.existsSync(user_data_filename)) {
     stats = fs.statSync(user_data_filename);
-
     var data = fs.readFileSync(user_data_filename, 'utf-8');
     var users_reg_data = JSON.parse(data);
 }
@@ -49,33 +52,29 @@ app.all('*', function (request, response, next) {
     next();
 });
 
-//
+// Assignment 3 example code, Ex 2
+// Response when user clicks add to cart in products page, invokes this action for quantity validation and storing quantities in session
 app.get("/add_to_cart", function (request, response, next) {
     var products_key = request.query['products_key']; // get the product key sent from the form post
     var quantities = request.query['quantities'].map(Number); // Get quantities from the form post and convert strings from form post to numbers
 
     for (i = 0; i < quantities.length; i++) {
-        is_valid = true;
+        is_valid = true; //starts out true, idea to use variable from Britnie Roach
 
         // Validates whether product selection form is empty
         if (quantities[0] == 0 && quantities[1] == 0 && quantities[2] == 0) {
             is_valid = false;
         }
 
-        // Validates whether quantities are non-negative integers and are greater than 0
-        if (isNonNegInt(quantities[i]) == true && quantities[i] > 0) {
-            is_valid = true;
-        }
-
-        // If not non-negative integers, invalid
-        if (isNonNegInt(quantities[i]) == false) {
+        // Validates whether quantities are non-negative integers
+        if (isNonNegInt(quantities[0]) == false || isNonNegInt(quantities[1]) == false || isNonNegInt(quantities[2]) == false) {
             is_valid = false;
         }
     }
 
     if (is_valid == true) {
-        request.session.cart[products_key] = quantities; // store the quantities array in the session cart object with the same products_key.
-        request.session.save();
+        request.session.cart[products_key] = quantities; // store the quantities array in the session cart object with the same products_key when quantity is valid
+        request.session.save(); // from A3 workshop help
         console.log(request.session.cart);
         var added_to_cart = fs.readFileSync('./views/added_to_cart.template', 'utf8');
         response.send(eval('`' + added_to_cart + '`')); // render template string
@@ -85,49 +84,30 @@ app.get("/add_to_cart", function (request, response, next) {
     }
 });
 
+// Modified from my Assignment 2 and Invoice 4, A3 example code Ex 2
+// Response when user clicks cart
 app.get("/cart", function (request, response) {
+    // If user is logged in, their username will be displayed in cart_str message
     if (typeof request.cookies.username != 'undefined') {
         user_name = request.cookies.username;
         cart_str = `Hi ${user_name}, please review your shopping cart before purchasing!`;
+        // If user is not logged in, they will be referred to as Anonymous
     } else {
         user_name = 'Anonymous';
         cart_str = `Hi ${user_name}, please review your shopping cart!`
     }
 
-    /*function add_items() {
-        // For each product key in session cart array
-        for (pk in request.session.cart) {
-
-            // For each specific item in the product key of session cart array
-            for (i = 0; i < request.session.cart[pk].length; i++) {
-                qty = request.session.cart[pk][i];
-                qty += 1;
-            }
-        }
-    }
-
-    function remove_items() {
-        // For each product key in session cart array
-        for (pk in request.session.cart) {
-
-            // For each specific item in the product key of session cart array
-            for (i = 0; i < request.session.cart[pk].length; i++) {
-                qty = request.session.cart[pk][i];
-                qty -= 1;
-            }
-        }
-    }*/
-
     subtotal = 0;
     invoice_rows = '';
 
-    // For each product key in session cart array
+    // Loop for each product key in session cart array, from Professor Port's A3 workshop
     for (pk in request.session.cart) {
 
-        // For each specific item in the product key of session cart array
+        // Loop for each specific item in the product key of session cart array
         for (i = 0; i < request.session.cart[pk].length; i++) {
             qty = request.session.cart[pk][i];
 
+            // Displays quantites only if they are greater than 0
             if (qty > 0) {
                 // product row
                 extended_price = qty * products_data[pk][i].price
@@ -161,16 +141,23 @@ app.get("/cart", function (request, response) {
     // Compute grand total
     total = subtotal + tax + shipping;
 
-    // Directs to cart page
     var contents = fs.readFileSync('./views/cart.template', 'utf8');
     response.send(eval('`' + contents + '`')); // render template string
-
 });
 
-app.get("/get_cart", function (request, response) {
-    response.json(request.session.cart);
-});
+// Response for when user wants to clear cart data
+app.get("/remove_items", function (request, response) {
+    for (pk in request.session.cart) {
 
+        // For each specific item in the product key of session cart array
+        for (i in request.session.cart[pk]) {
+            request.session.cart[pk][i] = 0; // makes all quantites in cart 0
+        }
+    }
+    request.session.save();
+    console.log(request.session.cart);
+    response.redirect('./removeitems.html');
+});
 
 // Lab 14 Ex 3
 // Response when /login is requested
@@ -225,9 +212,9 @@ app.post("/process_login", function (request, response) {
     }
 });
 
-// Modified from Assignment 3 code examples: Example 3 creating invoice and email user
-// Response when /checkout is requested at shopping cart page, loads invoice
-app.get("/checkout", function (request, response) {
+// Modified from Assignment 3 code examples: Example 3, my A2 and Invoice 4
+// Response when /checkout is requested at shopping cart page, loads invoice and emails user
+app.post("/checkout", function (request, response) {
     if (typeof request.cookies.username != 'undefined') {
         user_name = request.cookies.username;
 
@@ -246,13 +233,13 @@ app.get("/checkout", function (request, response) {
                     extended_price = qty * products_data[pk][i].price
                     subtotal += extended_price;
                     invoice_rows += (`
-  <tr>
-    <td align="center" width="43%">${products_data[pk][i]['name']}</td>
-    <td align="center" width="11%">${qty}</td>
-    <td align="center" width="13%">\$${products_data[pk][i]['price']}</td>
-    <td align="center" width="54%">\$${extended_price}</td>
-  </tr>
-  `);
+                    <tr>
+                    <td align="center" width="43%">${products_data[pk][i]['name']}</td>
+                    <td align="center" width="11%">${qty}</td>
+                    <td align="center" width="13%">\$${products_data[pk][i]['price']}</td>
+                    <td align="center" width="54%">\$${extended_price}</td>
+                    </tr>
+                    `);
                 }
             }
         }
@@ -276,7 +263,7 @@ app.get("/checkout", function (request, response) {
 
         // Set up mail server. Only will work on UH Network due to security restrictions
         var transporter = nodemailer.createTransport({
-            service: "mail.hawaii.edu",
+            host: "mail.hawaii.edu",
             port: 25,
             secure: false, // use TLS
             tls: {
@@ -285,25 +272,61 @@ app.get("/checkout", function (request, response) {
             }
         });
 
-        var user_email = users_reg_data[user_name].email;
+        var user_email = users_reg_data[user_name].email; // grab user email data
         // Sends invoice to user's email from my unimportant email address
         var mailOptions = {
             from: 'jlaaau@gmail.com',
             to: user_email,
             subject: 'Your Invoice from Cherry On Top',
-            html: invoice_rows
+            html: `<p>Thank you ${user_name} for shopping at Cherry on top!</p>
+            <p>Please review your invoice below:</p>
+            <table border="2">
+            <tbody>
+              <tr>
+                <th style="text-align: center;" width="43%">Item</th>
+                <th style="text-align: center;" width="11%">Quantity</th>
+                <th style="text-align: center;" width="13%">Price</th>
+                <th style="text-align: center;" width="54%">Extended price</th>
+              </tr>
+                ${invoice_rows}
+              <tr>
+                <td style="text-align: center;" colspan="4" width="100%">&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;" colspan="3" width="67%">Sub-total</td>
+                <td style="text-align: center;" width="54%">$
+                  ${subtotal}
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: arial;">Tax @
+                    ${(100 * tax_rate)}%</span></td>
+                <td style="text-align: center;" width="54%">\$${tax.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;" colspan="3" width="67%">Shipping</span></td>
+                <td style="text-align: center;" width="54%">\$${shipping.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;" colspan="3" width="67%"><strong>Total</strong></td>
+                <td style="text-align: center;" width="54%"><strong>\$${total.toFixed(2)}</strong></td>
+              </tr>
+            </tbody>
+          </table>` //content of email, invoice table
         };
 
+        // Displays email_str message for when emailing user is successful or not
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 email_str = `There was an error and your invoice could not be emailed to ${user_email} :(`;
+                console.log(error);
             } else {
                 email_str = `Your invoice was mailed to ${user_email}! :)`;
             }
 
-        // Directs to checkout page
-        var contents = fs.readFileSync('./views/checkout.template', 'utf8');
-        response.send(eval('`' + contents + '`')); // render template string
+            // Directs to checkout page
+            var contents = fs.readFileSync('./views/checkout.template', 'utf8');
+            response.send(eval('`' + contents + '`')); // render template string
 
         });
     } else {
@@ -384,7 +407,7 @@ app.post("/process_register", function (request, response) {
 });
 
 // Lab 15 Ex 4
-// Response when user wants to log out
+// Response when user wants to log out, destroys session and clears cookie
 app.get("/logout", function (request, response) {
     response.clearCookie("username");
     request.session.destroy();

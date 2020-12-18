@@ -15,11 +15,22 @@
         var products;
         var total = 0;
 
+        // Professor Port's Assignment 3 code examples: Example 1
         loadJSON('get_products', function (response) {
             // Parsing JSON string into object
             products_data = JSON.parse(response);
         });
 
+        // Professor Port's Assignment 3 code examples: Example 1
+        loadJSON('get_cart', function (response) {
+            // Parsing JSON string into object
+            shopping_cart = JSON.parse(response);
+            for (pk in shopping_cart) {
+                total += shopping_cart[pk].reduce((a, b) => a + b);
+            }
+        });
+
+        // Professor Port's Assignment 3 code examples: Example 1
         // get the query string
         let params = (new URL(document.location)).searchParams;
         if (params.has('products_key')) {
@@ -41,29 +52,33 @@
         <h3>
             <a href='index.html'>HOME<a>&nbsp&nbsp&nbsp;
                     <script>
-                        // Navigation bar
+                        // Navigation bar (Assignment 3 example, Ex 1)
                         nav_bar(this_product_key, products_data);
                         var username = getCookie('username');
                         if (username != "") {
                             // Making space on the nav bar to separate left and right sides
-                            // If user is logged in, "Logout" will display
+                            // If user is logged in, "Logout" will display and displays cart amount
                             document.write(`&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;
                             <a href='./logout'>Logout ${username}<a>&nbsp&nbsp&nbsp;
-                            <a href='./cart'>Cart<a>`);
+                            <a href='./cart'>Cart (<span id="cart_total">0</span>)<a>`);
                         } else {
-                            // If user is not logged in, "Login" will display
+                            // If user is not logged in, "Login" will display and displays cart amount
                             document.write(`&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;
                             <a href='login'>Login<a>&nbsp&nbsp&nbsp
                             <a href='./cart'>Cart (<span id="cart_total">0</span>)<a>`);
                         }
-
                     </script>
 
         </h3>
+        <p>You have <span id="cart_msg">0</span> items in your shopping cart!</p>
     </center>
-
     <div>
         <script>
+            // Modified from Assignment 3 example 1 code from Professor Port
+            // Changes the number in shopping cart based on total
+            document.getElementById('cart_total').innerHTML = total;
+            document.getElementById('cart_msg').innerHTML = total;
+
             // This function takes a string assumed to be a key in the products array above to display and select the corresponding products
             var order_str = '';
             // get the particular products to display
