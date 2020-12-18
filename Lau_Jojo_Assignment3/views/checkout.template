@@ -19,13 +19,8 @@
 
 <body>
 <center><h2>Invoice</h2>
-Thank you ${user_name} for shopping at Cherry On Top!</center>
+<h3>Thank you ${user_name} for shopping at Cherry On Top!</h3></center>
 <br>
-
-<nav class="navbar">
-  <li><a href="./index.html">Home</a></li>
-  <li><a href="./store">Products</a></li>
-</nav>
 
   <table border="2">
     <tbody>
@@ -35,7 +30,7 @@ Thank you ${user_name} for shopping at Cherry On Top!</center>
         <th style="text-align: center;" width="13%">price</th>
         <th style="text-align: center;" width="54%">extended price</th>
       </tr>
-        ${display_invoice_table_rows()}
+        ${invoice_rows}
       <tr>
         <td style="text-align: center;" colspan="4" width="100%">&nbsp;</td>
       </tr>
@@ -68,6 +63,10 @@ Thank you ${user_name} for shopping at Cherry On Top!</center>
       Subtotals over $100 will be charged 5% of the subtotal amount
     </b><br><br>
   </div>
+  <center><h3>
+  ${email_str}<br>
+  You may now <b><a href='./logout'>log out<a></b>.
+  </h3></center>
 </body>
 
 </html>

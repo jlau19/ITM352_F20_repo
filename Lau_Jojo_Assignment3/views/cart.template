@@ -14,6 +14,8 @@
     /* Coded by Jojo Lau, ITM 352, UH Manoa Fall 2020.
     For e-Commerce Web-site Cherry On Top.
     This page is modified from Professor Dan Port's Assignment 1 MVC example and Invoice 4 WOD. */
+    
+    
     </script>
 
 </head>
@@ -32,9 +34,9 @@
     <a href='./products.html?products_key=socks'>socks<a>&nbsp&nbsp&nbsp;
   </h4>
 
-  <p><center>${cart_str}</center></p>
+  <p><center><h4>${cart_str}</h4></center></p>
 
-  <form action="/purchase" method="GET">
+  <form action="/checkout" method="GET">
   <table border="2">
     <tbody>
       <tr>
@@ -42,6 +44,7 @@
         <th style="text-align: center;" width="11%">Quantity</th>
         <th style="text-align: center;" width="13%">Price</th>
         <th style="text-align: center;" width="54%">Extended price</th>
+        <th style="text-align: center;" width="54%">Change quantities</th>
       </tr>
         ${invoice_rows}
       <tr>
@@ -77,7 +80,7 @@
     </b><br><br>
   </div>
   <br>
-  <center><INPUT TYPE="SUBMIT"  name="purchase" value="Purchase"></center>
+  <center><INPUT TYPE="SUBMIT"  name="checkout" value="Checkout"></center>
   </form>
 </body>
 
