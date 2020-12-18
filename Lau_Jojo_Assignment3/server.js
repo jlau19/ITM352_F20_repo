@@ -296,7 +296,6 @@ app.get("/checkout", function (request, response) {
 
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-                console.log(error);
                 email_str = `There was an error and your invoice could not be emailed to ${user_email} :(`;
             } else {
                 email_str = `Your invoice was mailed to ${user_email}! :)`;
